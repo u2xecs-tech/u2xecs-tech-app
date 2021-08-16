@@ -25,7 +25,7 @@ class Evaluations extends React.Component {
                 resolve(user.username)
             })
         }).then((username) => {
-            API.graphql({ query: listEvaluations, variables: { filter: { owner: username } } }).then((apiData) => {
+            API.graphql({ query: listEvaluations }).then((apiData) => {
                 console.log(apiData.data.listEvaluations.items)
                 this.setState({evaluations: apiData.data.listEvaluations.items})
             }).catch((error) => {
