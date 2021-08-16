@@ -21,7 +21,8 @@ const Evaluation = () => {
         description: "",
         answers: {items: [], nextToken: null},
         link: "",
-        start_date: ""
+        start_date: "",
+        status: 0
     });
 
     useEffect(() => {

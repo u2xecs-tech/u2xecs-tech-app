@@ -69,8 +69,12 @@ class Questionnaire extends React.Component {
     sendAnswers(evt) {
         evt.preventDefault()
         const start_date = Date.now()
-        const formData = { name: this.state.name, email: this.state.email, date: start_date.toString(), answers: JSON.stringify(this.state.answers) };
-        API.graphql({ query: createAnswer, variables: { input: formData }})
+        const formData = { name: this.state.name, email: this.state.email, date: start_date.toString(), answers: JSON.stringify(this.state.answers), evaluationID: this.state.evaluation.id };
+        API.graphql({ query: createAnswer, variables: { input: formData }}).then((answer) => {
+            console.log(answer)
+        }).catch((error) => {
+            console.log(error)
+        })
     }
 
     render() {

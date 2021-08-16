@@ -4,6 +4,8 @@ import AlertDialog from "../util/AlertDialog";
 import {useNavigate} from "react-router-dom";
 import {removeEval} from "../__mocks__/evals";
 import Report from "./Report";
+import {updateEvaluation, deleteEvaluation} from "../../graphql/mutations";
+import {API} from "aws-amplify";
 
 
 const Toolbar = (props) => {
@@ -18,8 +20,9 @@ const Toolbar = (props) => {
             case 2: alert('You need to UNARCHIVE this evaluation before reopening it.'); break;
             default: break;
         }
-        // api call
-        alert('Evaluation closed. You can reopen it later.')
+        API.graphql({ query: updateEvaluation, variables: { id: evaluation.id, input: { status :status} }}).then(() => {
+            alert('Evaluation closed. You can reopen it later.')
+        })
     }
 
     const onArchive = () => {
@@ -29,16 +32,16 @@ const Toolbar = (props) => {
             case 2: setStatus(1); break;
             default: break;
         }
-        // api call
-        alert('Evaluation archived. You can unarchive it later.')
+        API.graphql({ query: updateEvaluation, variables: { id: evaluation.id, input: { status :status} }}).then(() => {
+            alert('Evaluation archived. You can unarchive it later.')
+        })
     }
 
     const onDelete = () => {
-        // api call
-        removeEval(evaluation.id)
-
-        alert('Evaluation successfully deleted.')
-        navigate('/')
+        API.graphql({ query: deleteEvaluation, variables: { id: evaluation.id }}).then(() => {
+            alert('Evaluation successfully deleted.')
+            navigate('/')
+        })
     }
 
     return (

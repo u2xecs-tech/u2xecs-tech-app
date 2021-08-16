@@ -31,7 +31,7 @@ const EvaluationLink = (props) => (
                         color="textPrimary"
                         variant="body2"
                     >
-                        {props.link}
+                        ${process.env.PUBLIC_URL + "/questionnaire/" + props.link}
                     </Typography>
                 </Grid>
                 <Grid item>
