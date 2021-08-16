@@ -8,6 +8,7 @@ import { listEvaluations } from '../../graphql/queries';
 import { createEvaluation as createEvaluationMutation } from '../../graphql/mutations';
 import { API } from 'aws-amplify';
 import crypto from 'crypto';
+import Auth from "@aws-amplify/auth";
 
 class Evaluations extends React.Component {
     constructor(props) {
@@ -19,11 +20,17 @@ class Evaluations extends React.Component {
     }
 
     componentDidMount() {
-        API.graphql({ query: listEvaluations }).then((apiData) => {
-            console.log(apiData.data.listEvaluations.items)
-            this.setState({evaluations: apiData.data.listEvaluations.items})
-        }).catch((error) => {
-            console.log(error)
+        Auth.currentAuthenticatedUser().then((user) => {
+            return new Promise((resolve, reject) => {
+                resolve(user.username)
+            })
+        }).then((username) => {
+            API.graphql({ query: listEvaluations, variables: { filter: { owner: username } } }).then((apiData) => {
+                console.log(apiData.data.listEvaluations.items)
+                this.setState({evaluations: apiData.data.listEvaluations.items})
+            }).catch((error) => {
+                console.log(error)
+            })
         })
     }
 

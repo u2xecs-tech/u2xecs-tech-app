@@ -2,7 +2,7 @@ type Evaluation
   @model
   @auth(
     rules: [
-      { allow: owner, operations: [create, delete, update] }
+      { allow: owner, operations: [create, delete] }
     ]
   ) {
   id: ID!
