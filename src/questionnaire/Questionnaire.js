@@ -72,6 +72,7 @@ class Questionnaire extends React.Component {
         const formData = { name: this.state.name, email: this.state.email, date: start_date.toString(), answers: JSON.stringify(this.state.answers), evaluationID: this.state.evaluation.id };
         API.graphql({ query: createAnswer, variables: { input: formData }}).then((answer) => {
             console.log(answer)
+            alert("Thank you! You have successfully submitted your answers.")
         }).catch((error) => {
             console.log(error)
         })
