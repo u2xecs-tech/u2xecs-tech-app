@@ -33,9 +33,9 @@ class Questionnaire extends React.Component {
 
     updateAnswer(section, question, answerToUpdate) {
         const newAnswer = this.state.answer
-        newAnswer[section][question]
+        newAnswer[section][question] = answerToUpdate
         this.setState({
-            answer:
+            answer: newAnswer
         })
     }
 
