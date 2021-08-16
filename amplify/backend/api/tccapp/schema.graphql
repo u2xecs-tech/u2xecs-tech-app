@@ -1,0 +1,52 @@
+type Evaluation
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, delete, update] }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  start_date: String!
+  end_date: String
+  disclaimer: String
+  enabled_sections: String!
+  description: String
+  link: String!
+  status: Int!
+  comments: [Comment] @connection(keyName: "byEvaluation", fields: ["id"])
+  answers: [Answer] @connection(keyName: "byEvaluation", fields: ["id"])
+}
+
+type Answer
+  @model
+  @key(
+    name: "byEvaluation",
+    fields: ["evaluationID", "name", "email", "answers"]
+  ) {
+  id: ID!
+  evaluationID: ID!
+  evaluation: Evaluation @connection(fields: ["evaluationID"])
+  name: String
+  email: String
+  answers: String!
+  date: String
+}
+
+type Comment
+  @model
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read, delete, update]}
+    ]
+  )
+  @key(
+    name: "byEvaluation",
+    fields: ["evaluationID", "content"]
+  ) {
+  id: ID!
+  evaluationID: ID!
+  evaluation: Evaluation @connection(fields: ["evaluationID"])
+  content: String!
+  date: String
+}

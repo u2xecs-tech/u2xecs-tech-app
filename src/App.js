@@ -1,18 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
+import 'react-perfect-scrollbar/dist/css/styles.css';
+import {useRoutes} from 'react-router-dom';
+import {ThemeProvider} from '@material-ui/core';
+import GlobalStyles from './theme/GlobalStyles';
+import theme from './theme/index';
+import dashboardRoutes from './dashboard/routes';
+import questionnaireRoutes from './questionnaire/routes';
 
-function App() {
-  return (
-      <div className="App">
-        <header>
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1>We now have Auth!</h1>
-        </header>
-        <AmplifySignOut />
-      </div>
-  );
-}
+const App = () => {
+    const routing = useRoutes([...dashboardRoutes, ...questionnaireRoutes]);
 
-export default withAuthenticator(App);
+    return (
+        <ThemeProvider theme={theme}>
+            <GlobalStyles/>
+            {routing}
+        </ThemeProvider>
+    );
+};
+
+export default App;
