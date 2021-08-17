@@ -52,7 +52,7 @@ const EvaluationCard = (props) => (
                     variant="body2"
                     sx={{
                         wordBreak: 'break-word',
-                        maxHeight: '4em',
+                        maxHeight: '4.2em',
                         textOverflow: 'ellipsis',
                         overflow: 'hidden',
                         whiteSpace: 'pre-wrap'

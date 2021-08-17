@@ -135,7 +135,7 @@ export default function Report(props) {
             <body style={{fontSize: 13, padding: 10, paddingBottom: 10}}>{e.description}</body>
             <body style={{fontSize: 13, padding: 10, paddingBottom: 10}}>From {e.start_date} to {e.end_date}</body>
             <body style={{fontSize: 13, padding: 10, paddingBottom: 10}}>Total of {e.answers.length} answers</body>
-            {
+            {props.evaluation.answers.length > 0 &&
                 Object.entries(props.evaluation.answers[0] != null ? props.evaluation.answers[0].answers : []).map(([section, answers]) => (
                     <Box sx={{pt: 3}}>
                         <h3>{section}</h3>
