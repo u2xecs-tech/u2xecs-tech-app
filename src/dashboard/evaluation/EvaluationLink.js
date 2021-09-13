@@ -52,7 +52,7 @@ const EvaluationLink = (props) => {
             </CardContent>
             <CardActions>
                 <Tooltip title={url}>
-                    <Button size="small" color="primary" onClick={() => copyToClipboard(props.link)}>
+                    <Button size="small" color="primary" onClick={() => copyToClipboard(url)}>
                         Copy link
                     </Button>
                 </Tooltip>
