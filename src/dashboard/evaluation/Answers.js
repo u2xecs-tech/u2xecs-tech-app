@@ -25,7 +25,7 @@ const Answers = (props) => (
                         color="textPrimary"
                         variant="h2"
                     >
-                        {props.number}
+                        {typeof props.number === 'undefined' ? 0 : props.number}
                     </Typography>
                 </Grid>
                 <Grid item>

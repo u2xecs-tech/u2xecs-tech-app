@@ -181,7 +181,7 @@ export default function Report(props) {
 
     return (
         <div>
-            <Button sx={{mx: 1}} color="primary" variant="contained" onClick={handleClickOpen('paper')}>
+            <Button sx={{mx: 1}} color="primary" variant="contained" onClick={handleClickOpen('paper')} disabled={typeof props.evaluation.answers.isEmpty === 'undefined'}>
                 Generate report
             </Button>
             <Dialog

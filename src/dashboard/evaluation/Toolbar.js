@@ -1,8 +1,7 @@
-import {Box, Button, Typography} from '@material-ui/core';
-import {useState} from "react";
+import {Box, Button, Tooltip, Typography} from '@material-ui/core';
+import React, {useState} from "react";
 import AlertDialog from "../util/AlertDialog";
 import {useNavigate} from "react-router-dom";
-import {removeEval} from "../__mocks__/evals";
 import Report from "./Report";
 import {updateEvaluation, deleteEvaluation} from "../../graphql/mutations";
 import {API} from "aws-amplify";
@@ -13,27 +12,29 @@ const Toolbar = (props) => {
     const evaluation = props.evaluation
     const [status, setStatus] = useState(evaluation.status)
 
+    // 0:open <-> 1:closed <-> 2:archived
+
     const onClose = () => {
+        let msg = ''
         switch (status) {
-            case 0: setStatus(1); break;
-            case 1: setStatus(0); break;
-            case 2: alert('You need to UNARCHIVE this evaluation before reopening it.'); break;
+            case 0: setStatus(1); msg = 'Evaluation closed.'; break;
+            case 1: case 2: setStatus(0); msg = 'Evaluation opened.'; break;
             default: break;
         }
-        API.graphql({ query: updateEvaluation, variables: { id: evaluation.id, input: { status :status} }}).then(() => {
-            alert('Evaluation closed. You can reopen it later.')
+        API.graphql({ query: updateEvaluation, variables: { id: evaluation.id, input: { status : status }}}).then(() => {
+            alert(msg)
         })
     }
 
     const onArchive = () => {
+        let msg = ''
         switch (status) {
-            case 0: alert('You need to CLOSE this evaluation before archiving it.'); break;
-            case 1: setStatus(2); break;
-            case 2: setStatus(1); break;
+            case 0: case 1: setStatus(2); msg = 'Evaluation archived'; break;
+            case 2: setStatus(1); msg = 'Evaluation unarchived'; break;
             default: break;
         }
-        API.graphql({ query: updateEvaluation, variables: { id: evaluation.id, input: { status :status} }}).then(() => {
-            alert('Evaluation archived. You can unarchive it later.')
+        API.graphql({ query: updateEvaluation, variables: { id: evaluation.id, input: { status : status }}}).then(() => {
+            alert(msg)
         })
     }
 
@@ -74,17 +75,35 @@ const Toolbar = (props) => {
                     }}
                 >
                     <Report evaluation={evaluation}/>
-                    {status !== 2 &&
-                    <Button sx={{mx: 1}} onClick={onClose}>{status === 0 ? 'Close' : 'Open'}</Button>
+                    {status === 1 ?
+                        <Button sx={{mx: 1}} onClick={onClose}>{'Open'}</Button>
+                        :
+                        <AlertDialog sx={{mx: 1}} button={status === 0 ? 'Close' : 'Open'}
+                                     title={`Do you wish to ${status === 0 ? 'close' : 'open'} further answering for this evaluation?`}
+                                     description={status === 0 ? 'You can reopen it later.' : 'This action will unarchive the evaluation.'}
+                                     onYes={onClose}/>
                     }
-                    {status !== 0 &&
-                    <Button sx={{mx: 1}} onClick={onArchive}>{status === 2 ? 'Unarchive' : 'Archive'}</Button>
+                    {status !== 0 ?
+                        <Button sx={{mx: 1}} onClick={onArchive}>{status === 2 ? 'Unarchive' : 'Archive'}</Button>
+                        :
+                        <AlertDialog sx={{mx: 1}} button={'Archive'}
+                                     title={'Do you wish to archive this evaluation?'}
+                                     description={'This action will automatically close further answering. You can unarchive and reopen it later.'}
+                                     onYes={onArchive}/>
                     }
-                    {status === 2 &&
-                    <AlertDialog sx={{mx: 1}} button={'Delete'}
-                                 title={'Are you sure you want to delete this evaluation?'}
-                                 description={'All information related to this evaluation will be lost forever.'}
-                                 onYes={onDelete}/>
+                    {typeof evaluation.answers.isEmpty !== 'undefined' ?
+                        <Tooltip title={'Only evaluations with no respondents can be deleted. You may archive it instead.'}>
+                            <span>
+                                <Button sx={{mx: 1, color: props.color}} disabled>
+                                    Delete
+                                </Button>
+                            </span>
+                        </Tooltip>
+                        :
+                        <AlertDialog sx={{mx: 1}} button={'Delete'} color={'red'}
+                                     title={'Are you sure you want to delete this evaluation?'}
+                                     description={'All information will be lost forever.'}
+                                     onYes={onDelete}/>
                     }
                 </Box>
             </Box>

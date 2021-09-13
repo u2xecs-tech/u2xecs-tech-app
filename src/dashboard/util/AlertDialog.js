@@ -26,7 +26,7 @@ export default function AlertDialog(props) {
 
     return (
         <div>
-            <Button sx={{color: red[600]}} onClick={handleClickOpen}>
+            <Button sx={{mx: 1, color: props.color}} onClick={handleClickOpen}>
                 {props.button}
             </Button>
             <Dialog
