@@ -1,5 +1,6 @@
 import {Outlet} from 'react-router-dom';
 import {experimentalStyled} from '@material-ui/core';
+import QuestionnaireNavbar from "./QuestionnaireNavbar";
 
 const QuestionnaireLayoutRoot = experimentalStyled('div')(
     ({theme}) => ({
@@ -35,6 +36,7 @@ const QuestionnaireLayoutContent = experimentalStyled('div')({
 const QuestionnaireLayout = () => {
     return (
         <QuestionnaireLayoutRoot>
+            <QuestionnaireNavbar/>
             <QuestionnaireLayoutWrapper>
                 <QuestionnaireLayoutContainer>
                     <QuestionnaireLayoutContent>

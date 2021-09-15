@@ -19,7 +19,7 @@ function getAnswers(n) {
 
 export default function actualAnswers() {
     return {
-        'UX Satisfaction': getAnswers(7),
+        'User Satisfaction': getAnswers(7),
         'Efficiency': getAnswers(4),
         'Aesthetics/Appeal': getAnswers(2),
         'Motivation': getAnswers(1),

@@ -81,7 +81,7 @@ class Questionnaire extends React.Component {
     render() {
         return (
             <>
-                <Box style={{textAlignVertical: "center",textAlign: "center",}}>
+                <Box>
                     <Container>
                         <Card style={{textAlignVertical: "center",textAlign: "center", width: "500px", margin: "50px auto", padding: "20px",}}>
                             <CardContent>
@@ -100,7 +100,7 @@ class Questionnaire extends React.Component {
                         <Card style={{textAlignVertical: "center",textAlign: "center", width: "500px", margin: "50px auto", padding: "20px",}}>
                             <CardContent>
                                 <Typography variant="h1">You're done!<br/>Thank you for answering</Typography><br/>
-                                <label>If you'd like to receive a copy of your answers,please enter your email below:</label><br/><br/>
+                                <label>If you'd like to receive a copy of your answers, please enter your email below:</label><br/><br/>
                                 <TextField sx={{p: 2}} fullWidth placeholder="Your email" onChange={this.updateEmail.bind(this)}/>
                             </CardContent>
                             <CardActions>

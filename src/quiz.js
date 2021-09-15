@@ -1,5 +1,5 @@
 export const quiz = {
-    'UX Satisfaction': [
+    'User Satisfaction': [
         'It was easy to use voice to perform the tasks in this system.',
         'I did not need to learn a lot about the system before performing these tasks with my voice.',
         'I was able to familiarize myself with the system when I first used it.',

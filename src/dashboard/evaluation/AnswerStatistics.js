@@ -12,13 +12,15 @@ import {
     Select,
     Typography
 } from '@material-ui/core';
+import choiceColors from '../../theme/colors';
+import labels from '../../theme/labels';
 
 class AnswerStatistics extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            section: 'UX Satisfaction',
+            section: 'User Satisfaction',
             question: 0,
             chart: 0,
         };
@@ -43,24 +45,12 @@ class AnswerStatistics extends React.Component {
             datasets: [
                 {
                     data: this.getStats(),
-                    backgroundColor: [
-                        '#00BF07',
-                        '#ABCF08',
-                        '#FFCD03',
-                        '#FF8800',
-                        '#FF380F'
-                    ],
+                    backgroundColor: choiceColors,
                     borderColor: colors.common.white,
                     hoverBorderColor: colors.common.white
                 }
             ],
-            labels: [
-                'I totally agree',
-                'I partially agree',
-                'I neither agree nor disagree',
-                'I partially disagree',
-                'I totally disagree'
-            ]
+            labels: labels
         };
 
         const options = {
@@ -170,7 +160,7 @@ class AnswerStatistics extends React.Component {
                                     pt: 2
                                 }}
                             >
-                                {data.labels.map((label, i) => (
+                                {labels.map((label, i) => (
                                     <div>
                                         <Divider/>
                                         <Box
@@ -186,7 +176,7 @@ class AnswerStatistics extends React.Component {
                                             <Chip
                                                 label={label}
                                                 style={{
-                                                    backgroundColor: data.datasets[0].backgroundColor[i]
+                                                    backgroundColor: choiceColors[i]
                                                 }}
                                             />
                                             <Typography variant="h5">

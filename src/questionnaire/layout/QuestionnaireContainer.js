@@ -1,5 +1,5 @@
 import {useParams} from "react-router";
-import Questionnaire from "./Questionnaire";
+import Questionnaire from "../Questionnaire";
 
 const QuestionnaireContainer = () => {
     const {link} = useParams();

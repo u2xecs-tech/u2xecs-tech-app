@@ -1,6 +1,7 @@
 import {colors, createTheme} from '@material-ui/core';
 import shadows from './shadows';
 import typography from './typography';
+import choiceColors from './colors'
 
 const theme = createTheme({
     palette: {
@@ -19,7 +20,27 @@ const theme = createTheme({
         secondary: {
             contrastText: '#ffffff',
             main: '#929292'
-        }
+        },
+        choice1: {
+            contrastText: '#ffffff',
+            main: choiceColors[0]
+        },
+        choice2: {
+            contrastText: '#ffffff',
+            main: choiceColors[1]
+        },
+        choice3: {
+            contrastText: '#ffffff',
+            main: choiceColors[2]
+        },
+        choice4: {
+            contrastText: '#ffffff',
+            main: choiceColors[3]
+        },
+        choice5: {
+            contrastText: '#ffffff',
+            main: choiceColors[4]
+        },
     },
     shadows,
     typography

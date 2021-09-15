@@ -1,5 +1,6 @@
 import {Box, Button, TextField, Typography} from "@material-ui/core";
 import React from "react";
+import labels from '../theme/labels';
 
 class Section extends React.Component {
     constructor(props) {
@@ -8,7 +9,7 @@ class Section extends React.Component {
         this.state = {
             answers: answers.map(() => {
                 return {
-                    answer: 0,
+                    answer: null,
                     comment: null
                 }
             })
@@ -33,30 +34,57 @@ class Section extends React.Component {
         console.log(newAnswers)
     }
 
+    getOpacity(idx, i) {
+        if (this.state.answers[idx].answer == null) {
+            return 1
+        }
+        return this.state.answers[idx].answer === i ? 1 : 0.4
+    }
+
     render() {
         return (
-            <>
-                <h1>{this.props.title}</h1>
+            <Box sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+            }}>
+                <Typography variant="h1">{this.props.title}</Typography>
                 {
                     this.props.questions.map((question, idx) => (
-                        <div key={question}>
-                            <h3>{idx + 1} - {question}</h3>
+                        <Box key={question} sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            my: 4,
+                            maxWidth: 880,
+                        }}>
+                            <Typography variant="h4" sx={{m: 1}}>{idx + 1}. {question}</Typography>
                             <Box>
-                                <Button variant="contained" question={idx} answer={1} onClick={this.setAnswer.bind(this)} color={ this.state.answers[idx].answer === 1 ? "primary" : "secondary"} sx={{mx: 1}}>I totally disagree</Button>
-                                <Button variant="contained" question={idx} answer={2} onClick={this.setAnswer.bind(this)} color={ this.state.answers[idx].answer === 2 ? "primary" : "secondary"} sx={{mx: 1}}>I partially disagree</Button>
-                                <Button variant="contained" question={idx} answer={3} onClick={this.setAnswer.bind(this)} color={ this.state.answers[idx].answer === 3 ? "primary" : "secondary"} sx={{mx: 1}}>I neither agree nor
-                                    disagree</Button>
-                                <Button variant="contained" question={idx} answer={4} onClick={this.setAnswer.bind(this)} color={ this.state.answers[idx].answer === 4 ? "primary" : "secondary"} sx={{mx: 1}}>I partially agree</Button>
-                                <Button variant="contained" question={idx} answer={5} onClick={this.setAnswer.bind(this)} color={ this.state.answers[idx].answer === 5 ? "primary" : "secondary"} sx={{mx: 1}}>I totally agree</Button>
+                                {labels.map((label, i) => (
+                                    <Button variant="contained"
+                                            question={idx} answer={i}
+                                            onClick={this.setAnswer.bind(this)}
+                                            color={`choice${i+1}`}
+                                            sx={{
+                                                width: 160,
+                                                height: 60,
+                                                m: 1,
+                                                opacity: this.getOpacity(idx, i),
+                                            }}>
+                                        {label}
+                                    </Button>
+                                ))}
                             </Box>
-                            {this.state.answers[idx].answer !== 5 && this.state.answers[idx].answer !== 0 && <Typography variant="p" sx={{mx: 1}}>Based on the statement above and your answer, describe the satisfaction issues you identified in the system.</Typography>}
-                            <br/>
-                            {this.state.answers[idx].answer !== 5 && this.state.answers[idx].answer !== 0 && <TextField inputProps={{question: idx}} multiline onChange={this.setComment.bind(this)}/>}
-                            <br/><br/>
-                        </div>
+                            {this.state.answers[idx].answer !== 0 && this.state.answers[idx].answer !== null &&
+                                <Typography variant="p" sx={{mt: 2, mx: 1}}>Based on the statement above and your answer, describe the {this.props.title} issues you identified in the system.</Typography>
+                            }
+                            {this.state.answers[idx].answer !== 0 && this.state.answers[idx].answer !== null &&
+                                <TextField inputProps={{question: idx}} multiline onChange={this.setComment.bind(this)} sx={{width: "98%", m: 1}}/>
+                            }
+                        </Box>
                     ))
                 }
-            </>
+            </Box>
         )
     }
 }
