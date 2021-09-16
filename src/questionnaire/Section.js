@@ -48,7 +48,7 @@ class Section extends React.Component {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                my: 8
+                py: 8,
             }}>
                 <Typography variant="h1">{this.props.title}</Typography>
                 {

@@ -26,6 +26,7 @@ class Questionnaire extends React.Component {
             name: "",
             email: null
         };
+        this.firstSection = React.createRef()
     }
 
     componentDidMount() {
@@ -35,8 +36,9 @@ class Questionnaire extends React.Component {
             enabledSections.map((section) => {
                 answers[section] = []
             })
+            const evaluation = apiData.data.listEvaluations.items[0]
             this.setState({
-                evaluation: apiData.data.listEvaluations.items[0],
+                evaluation: evaluation.status !== 0 ? -1 : evaluation,
                 enabledSections: enabledSections,
                 answers: answers
             })
@@ -78,28 +80,58 @@ class Questionnaire extends React.Component {
         })
     }
 
+    startQuiz() {
+        if (this.state.name !== "") {
+            this.firstSection.current.scrollIntoView({ behavior: 'smooth' })
+        }
+    }
+
+    submitAnswers() {
+        if (this.state.name !== "") {
+            // submit
+        }
+    }
+
     render() {
         const windowSize = this.props.windowSize
         return (
             <Box>
                 <Container sx={{height: windowSize.height - 124, display: "flex", alignItems: "center"}}>
-                    <Card style={{textAlignVertical: "center", textAlign: "center", width: "500px", margin: "50px auto", padding: "20px"}}>
+                    <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px"}}>
                         <CardContent>
-                            <Typography variant="h1">Hi! Please tell us who you are</Typography><br/>
-                            <TextField sx={{p: 2}} fullWidth placeholder="Please enter your full name" onChange={this.updateName.bind(this)}/>
+                            {this.state.evaluation !== -1 ?
+                                <div>
+                                    <Typography variant="h1">Hi! Please tell us who you are</Typography><br/>
+                                    <TextField sx={{p: 2}} fullWidth placeholder="Please enter your full name"
+                                               onChange={this.updateName.bind(this)}/>
+                                </div>
+                                :
+                                <div>
+                                    <Typography variant="h1">Sorry! Looks like this evaluation has been closed.</Typography><br/><br/>
+                                    <Typography variant="p">Believe this is an error? Contact the evaluation's owner!</Typography>
+                                </div>
+                            }
                         </CardContent>
+                        {this.state.evaluation !== -1 &&
                         <CardActions>
-                            <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}>Let's go!</Button>
+                            <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
+                                    onClick={this.startQuiz.bind(this)}>Let's go!</Button>
                         </CardActions>
+                        }
                     </Card>
                 </Container>
-                {
-                    this.state.enabledSections.map((section) => (
-                        <Section sections={section} title={Object.keys(quiz)[section]} questions={quiz[Object.keys(quiz)[section]]} updateAnswer={this.updateAnswer.bind(this)}/>
-                    ))
+                {this.state.evaluation !== -1 &&
+                this.state.enabledSections.map((section, i) => (
+                    <div ref={i === 0 ? this.firstSection : null}>
+                        <Section sections={section} title={Object.keys(quiz)[section]}
+                                 questions={quiz[Object.keys(quiz)[section]]}
+                                 updateAnswer={this.updateAnswer.bind(this)}/>
+                    </div>
+                ))
                 }
+                {this.state.evaluation !== -1 &&
                 <Container sx={{height: windowSize.height - 4, display: "flex", alignItems: "center"}}>
-                    <Card style={{textAlignVertical: "center", textAlign: "center", width: "500px", margin: "50px auto", padding: "20px",}}>
+                    <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px",}}>
                         <CardContent>
                             <Typography variant="h1">You're done!<br/>Thank you for answering</Typography><br/>
                             {/*<label>If you'd like to receive a copy of your answers, please enter your email below:</label><br/><br/>*/}
@@ -110,6 +142,7 @@ class Questionnaire extends React.Component {
                         </CardActions>
                     </Card>
                 </Container>
+                }
             </Box>
         )
     }
