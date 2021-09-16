@@ -1,24 +1,20 @@
-import {Link as RouterLink} from 'react-router-dom';
-import PropTypes from 'prop-types';
 import {AppBar, Box, Toolbar, Typography} from '@material-ui/core';
+import React from "react";
 
-const DashboardNavbar = ({onMobileNavOpen, ...rest}) => {
+const DashboardNavbar = () => {
     return (
-        <AppBar elevation={0} {...rest}>
+        <AppBar elevation={0}>
             <Toolbar>
-                <RouterLink to="/">
-                    <Typography color="white" variant="h2">
-                        U2XECS
-                    </Typography>
-                </RouterLink>
+                <Typography color="white" variant="h2">
+                    U2XECS
+                </Typography>
                 <Box sx={{flexGrow: 1}}/>
+                <Typography sx={{pr: 2}}>
+                    Evaluation Name by Evaluation Owner
+                </Typography>
             </Toolbar>
         </AppBar>
     );
-};
-
-DashboardNavbar.propTypes = {
-    onMobileNavOpen: PropTypes.func
 };
 
 export default DashboardNavbar;

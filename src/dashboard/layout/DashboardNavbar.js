@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {Link as RouterLink} from 'react-router-dom';
-import PropTypes from 'prop-types';
 import {AppBar, Box, IconButton, Toolbar, Typography} from '@material-ui/core';
 import InputIcon from '@material-ui/icons/Input';
 import Auth from '@aws-amplify/auth';
 
-const DashboardNavbar = ({onMobileNavOpen, ...rest}) => {
+const DashboardNavbar = () => {
     const [user, setUser] = useState([]);
 
     useEffect(() => {
@@ -25,7 +24,7 @@ const DashboardNavbar = ({onMobileNavOpen, ...rest}) => {
     }
 
     return (
-        <AppBar elevation={0} {...rest}>
+        <AppBar elevation={0}>
             <Toolbar>
                 <RouterLink to="/">
                     <Typography color="white" variant="h2">
@@ -42,10 +41,6 @@ const DashboardNavbar = ({onMobileNavOpen, ...rest}) => {
             </Toolbar>
         </AppBar>
     );
-};
-
-DashboardNavbar.propTypes = {
-    onMobileNavOpen: PropTypes.func
 };
 
 export default DashboardNavbar;
