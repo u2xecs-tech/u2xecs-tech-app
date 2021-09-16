@@ -1,6 +1,7 @@
 import {Box, Button, TextField, Typography} from "@material-ui/core";
 import React from "react";
 import labels from '../theme/labels';
+import colors from "../theme/colors";
 
 class Section extends React.Component {
     constructor(props) {
@@ -65,12 +66,15 @@ class Section extends React.Component {
                                     <Button variant="contained"
                                             question={idx} answer={i}
                                             onClick={this.setAnswer.bind(this)}
-                                            color={`choice${i+1}`}
                                             sx={{
                                                 width: 160,
                                                 height: 60,
                                                 m: 1,
                                                 opacity: this.getOpacity(idx, i),
+                                                background: colors[i],
+                                                '&:hover': {
+                                                    // background: colors[i],
+                                                }
                                             }}>
                                         {label}
                                     </Button>
