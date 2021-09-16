@@ -24,7 +24,8 @@ class Questionnaire extends React.Component {
             enabledSections: [],
             answers: {},
             name: "",
-            email: null
+            email: null,
+            submitted: false
         };
         this.firstSection = React.createRef()
     }
@@ -56,24 +57,22 @@ class Questionnaire extends React.Component {
         })
     }
 
-    updateName(evt) {
-        this.setState({
-            name: evt.target.value
-        })
-    }
+    updateName = (evt) => this.setState({ name: evt.target.value })
 
-    updateEmail(evt) {
-        this.setState({
-            email: evt.target.value
-        })
-    }
+    updateEmail= (evt) => this.setState({ email: evt.target.value })
 
     sendAnswers(evt) {
+        if (this.state.submitted === true) {
+            alert("You cannot resubmit the same answers, please reload the page to retake the questionnaire.")
+            return
+        }
+
         evt.preventDefault()
         const start_date = Date.now()
         const formData = { name: this.state.name, email: this.state.email, date: start_date.toString(), answers: JSON.stringify(this.state.answers), evaluationID: this.state.evaluation.id };
         API.graphql({ query: createAnswer, variables: { input: formData }}).then((answer) => {
             console.log(answer)
+            this.setState({ submitted: true })
             alert("Thank you! You have successfully submitted your answers.")
         }).catch((error) => {
             console.log(error)
@@ -87,7 +86,7 @@ class Questionnaire extends React.Component {
     }
 
     submitAnswers() {
-        if (this.state.name !== "") {
+        if (this.state.name !== "" /*&& all questions and boxes answered*/) {
             // submit
         }
     }
