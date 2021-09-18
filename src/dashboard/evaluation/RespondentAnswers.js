@@ -34,7 +34,6 @@ export default function RespondentAnswers(props) {
             {color: '#FF8800', text: 'I partially disagree'},
             {color: '#FF380F', text: 'I totally disagree'},
         ]
-
         const chip = chips[a]
 
         return (

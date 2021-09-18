@@ -5,15 +5,18 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {Box, Checkbox, FormControlLabel, MenuItem, Select, Typography} from "@material-ui/core";
-import {Report} from "@material-ui/icons";
+import {PDFDownloadLink} from "@react-pdf/renderer";
+import Report from "./Report"
 
 export default function ReportGenerator(props) {
     const [open, setOpen] = React.useState(false);
     const [scroll, setScroll] = React.useState('paper');
 
     const [chart, setChart] = React.useState(0);
-    // const [file, setFile] = React.useState(0);
+    const [file, setFile] = React.useState(0);
     const [comments, setComments] = React.useState(true);
+
+    const evaluation = props.evaluation
 
     const handleClickOpen = (scrollType) => () => {
         setOpen(true);
@@ -36,7 +39,8 @@ export default function ReportGenerator(props) {
 
     return (
         <div>
-            <Button sx={{mx: 1}} color="primary" variant="contained" onClick={handleClickOpen('paper')}>
+            <Button sx={{mx: 1}} color="primary" variant="contained" onClick={handleClickOpen('paper')}
+                    disabled={typeof props.evaluation.answers.items === 'undefined'}>
                 Generate report
             </Button>
             <Dialog
@@ -77,22 +81,22 @@ export default function ReportGenerator(props) {
                             <MenuItem value={1}>Bar</MenuItem>
                         </Select>
                     </Box>
-                    {/*<Box*/}
-                    {/*    sx={{*/}
-                    {/*        display: 'flex',*/}
-                    {/*        alignItems: 'center',*/}
-                    {/*        gap: 2,*/}
-                    {/*        pb: 2,*/}
-                    {/*    }}*/}
-                    {/*>*/}
-                    {/*    <Typography variant='h5'>*/}
-                    {/*        File format:*/}
-                    {/*    </Typography>*/}
-                    {/*    <Select value={file} variant='standard' onChange={(e) => {setFile(e.target.value)}}>*/}
-                    {/*        <MenuItem value={0}>PDF</MenuItem>*/}
-                    {/*        <MenuItem value={1}>CSV</MenuItem>*/}
-                    {/*    </Select>*/}
-                    {/*</Box>*/}
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 2,
+                            mb: 3,
+                        }}
+                    >
+                        <Typography variant='h5'>
+                            File format:
+                        </Typography>
+                        <Select value={file} variant='standard' onChange={(e) => {setFile(e.target.value)}}>
+                            <MenuItem value={0}>PDF</MenuItem>
+                            <MenuItem value={1}>CSV</MenuItem>
+                        </Select>
+                    </Box>
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -105,10 +109,16 @@ export default function ReportGenerator(props) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>
+                    <Button onClick={handleClose} color="error">
                         Cancel
                     </Button>
-                    <Report/>
+                    <Button>
+                        <PDFDownloadLink document={<Report/>} fileName={`${evaluation.name}.pdf`}>
+                            {({ blob, url, loading, error }) =>
+                                loading ? 'Generating...' : 'Download'
+                            }
+                        </PDFDownloadLink>
+                    </Button>
                 </DialogActions>
             </Dialog>
         </div>

@@ -12,6 +12,7 @@ import Comments from "./Comments";
 import React, { useState, useEffect } from 'react';
 import { API } from 'aws-amplify';
 import { getEvaluation } from '../../graphql/queries';
+import {getEvalByID} from "../__mocks__/evals";
 
 const Evaluation = () => {
     const {id} = useParams();
@@ -30,9 +31,10 @@ const Evaluation = () => {
     }, []);
 
     async function fetchEvaluation() {
-        const apiData = await API.graphql({ query: getEvaluation, variables: { id: id } });
-        console.log(apiData.data.getEvaluation)
-        setEvaluation(apiData.data.getEvaluation)
+        // const apiData = await API.graphql({ query: getEvaluation, variables: { id: id } });
+        // console.log(apiData.data.getEvaluation)
+        // setEvaluation(apiData.data.getEvaluation)
+        setEvaluation(getEvalByID('0'))
     }
 
     return (
@@ -56,7 +58,7 @@ const Evaluation = () => {
                             <Description sx={{height: '100%'}} description={evaluation.description}/>
                         </Grid>
                         <Grid item lg={2} sm={6} xl={2} xs={12}>
-                            <Answers sx={{height: '100%'}} number={evaluation.answers.length}/>
+                            <Answers sx={{height: '100%'}} number={evaluation.answers.items.length}/>
                         </Grid>
                         <Grid item lg={3} sm={6} xl={3} xs={12}>
                             <EvaluationLink sx={{height: '100%'}} link={evaluation.link}/>

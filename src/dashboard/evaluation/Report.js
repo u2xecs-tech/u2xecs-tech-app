@@ -1,36 +1,10 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import {Box, colors, Container, Typography} from "@material-ui/core";
-import {jsPDF} from "jspdf";
 import {quiz} from "../../quiz";
 import {Chart, Doughnut} from "react-chartjs-2";
+import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 export default function Report(props) {
-    const [open, setOpen] = React.useState(false);
-    const [scroll, setScroll] = React.useState('paper');
-
-    const handleClickOpen = (scrollType) => () => {
-        setOpen(true);
-        setScroll(scrollType);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const descriptionElementRef = React.useRef(null);
-    React.useEffect(() => {
-        if (open) {
-            const {current: descriptionElement} = descriptionElementRef;
-            if (descriptionElement !== null) {
-                descriptionElement.focus();
-            }
-        }
-    }, [open]);
 
     Chart.register({
         id: 'white',
@@ -92,40 +66,14 @@ export default function Report(props) {
     const options = {
         animation: false,
         maintainAspectRatio: false,
-        // responsive: false,
         plugins: {
             legend: {
-                // display: false
                 position: 'right'
             },
             tooltip: {
                 enabled: false
             }
         },
-        // scales: {
-        //     x: {
-        //         grid: {
-        //             display: false,
-        //             drawBorder: false,
-        //             drawTicks: false,
-        //         },
-        //         ticks: {
-        //             display: false
-        //         },
-        //         offset: true
-        //     },
-        //     y: {
-        //         grid: {
-        //             display: this.state.chart === 1,
-        //             drawBorder: false,
-        //             drawTicks: false,
-        //         },
-        //         ticks: {
-        //             display: this.state.chart === 1,
-        //             stepSize: 1
-        //         }
-        //     },
-        // }
     }
 
     const report = () => (
@@ -171,40 +119,25 @@ export default function Report(props) {
         </Container>
     )
 
-    const download = () => {
-        const pdf = new jsPDF('p', 'pt', 'a4')
-        pdf.html(document.getElementById("report")).then(() => {
-            // pdf.output("dataurlnewwindow");
-            pdf.save("My Report.pdf")
-        })
-    }
+    const styles = StyleSheet.create({
+        page: {
+            flexDirection: 'row',
+            backgroundColor: '#E4E4E4'
+        },
+        section: {
+            margin: 10,
+            padding: 10,
+            flexGrow: 1
+        }
+    });
 
     return (
-        <div>
-            <Button sx={{mx: 1}} color="primary" variant="contained" onClick={handleClickOpen('paper')} disabled={typeof props.evaluation.answers.isEmpty === 'undefined'}>
-                Generate report
-            </Button>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                scroll={scroll}
-                aria-labelledby="scroll-dialog-title"
-                aria-describedby="scroll-dialog-description"
-            >
-                <DialogTitle id="scroll-dialog-title">
-                    <Typography variant="h4">
-                        Evaluation report
-                    </Typography>
-                </DialogTitle>
-                <DialogContent dividers={scroll === 'paper'}>
-                    {report()}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={download} variant="contained">
-                        Download PDF
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
+        <Document>
+            <Page size="A4" style={styles.page}>
+                <View style={styles.section}>
+                    <Text>Section #1</Text>
+                </View>
+            </Page>
+        </Document>
     );
 }
