@@ -1,10 +1,13 @@
 import React from 'react';
-import {Box, colors, Container, Typography} from "@material-ui/core";
+import {colors} from "@material-ui/core";
 import {quiz} from "../../quiz";
 import {Chart, Doughnut} from "react-chartjs-2";
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import {Document, Font, Image, Page, StyleSheet, Text, View} from '@react-pdf/renderer';
+import html2canvas from "html2canvas";
+import {Buffer} from 'buffer';
 
 export default function Report(props) {
+    const e = props.evaluation
 
     Chart.register({
         id: 'white',
@@ -19,10 +22,8 @@ export default function Report(props) {
         return quiz[s][q]
     }
 
-    const e = props.evaluation
-
     const getStats = (s, q) => {
-        const answers = e.answers.map((a) => a.answers[s][q].answer)
+        const answers = e.answers.items.map((a) => a.answers[s][q].answer)
         const stats = [0, 0, 0, 0, 0]
         answers.forEach((a) => {
             stats[a]++
@@ -33,6 +34,20 @@ export default function Report(props) {
     const getPercentages = (stats) => {
         const sum = stats.reduce((a, b) => a + b)
         return stats.map((s) => Math.round(s * 100 / sum))
+    }
+
+    const getChart = (section, i) => {
+        const chart = (
+            <Doughnut data={data(section, i)} options={options}/>
+        )
+
+        return new Promise((resolve, reject) => {
+            html2canvas(chart).then(canvas => {
+                const img = canvas.toDataURL('image/png');
+                const buffer = new Buffer(img)
+                resolve(buffer)
+            })
+        })
     }
 
     const data = (s, q) => {
@@ -76,67 +91,52 @@ export default function Report(props) {
         },
     }
 
-    const report = () => (
-        <Container id="report">
-            <h5 style={{paddingTop: 40, color: 'gray'}}>U2XECS Evaluation</h5>
-            <h1 style={{paddingBottom: 10}}>{e.name}</h1>
-            <body style={{fontSize: 13, padding: 10, paddingBottom: 10}}>{e.description}</body>
-            <body style={{fontSize: 13, padding: 10, paddingBottom: 10}}>From {e.start_date} to {e.end_date}</body>
-            <body style={{fontSize: 13, padding: 10, paddingBottom: 10}}>Total of {e.answers.length} answers</body>
-            {props.evaluation.answers.length > 0 &&
-                Object.entries(props.evaluation.answers[0] != null ? props.evaluation.answers[0].answers : []).map(([section, answers]) => (
-                    <Box sx={{pt: 3}}>
-                        <h3>{section}</h3>
-                        {
-                            answers.map((a, i) => (
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        py: 1
-                                    }}
-                                >
-                                    <Typography gutterBottom variant='body'>{i + 1}. {getQuestion(section, i)}</Typography>
-                                    <Box
-                                        sx={{
-                                            py: 1,
-                                            height: '200px',
-                                            backgroundColor: 'white'
-                                        }}
-                                    >
-                                        <Doughnut data={data(section, i)} options={options}/>
-                                    </Box>
-                                    <h6 style={{paddingLeft: 8, paddingTop: 10}}>Respondent comments</h6>
-                                    {answers.filter((a) => a.comment !== null).map((a) => (
-                                        <body style={{fontSize: 11, padding: 10, paddingBottom: 10}}>{a.comment}</body>
-                                    ))}
-                                </Box>
-                            ))
-                        }
-                    </Box>
-                ))
-            }
-        </Container>
-    )
-
     const styles = StyleSheet.create({
         page: {
-            flexDirection: 'row',
-            backgroundColor: '#E4E4E4'
+            flexDirection: 'column',
+            padding: 20,
+        },
+        title: {
+            padding: 10,
+            backgroundColor: "#E4E4E4",
+            marginBottom: 10
         },
         section: {
-            margin: 10,
-            padding: 10,
-            flexGrow: 1
+            padding: 10
+        },
+        question: {
+            paddingVertical: 4
         }
     });
+
+    Font.registerHyphenationCallback(word => [word]);
 
     return (
         <Document>
             <Page size="A4" style={styles.page}>
-                <View style={styles.section}>
-                    <Text>Section #1</Text>
+                <View style={styles.title}>
+                    <Text style={{ fontFamily: "Helvetica", fontSize: "17" }}>U2XECS Evaluation Report</Text>
+                    <Text style={{ fontFamily: "Helvetica-Bold", fontSize: "24", paddingTop: 16 }}>{e.name}</Text>
+                    <Text style={{ fontFamily: "Helvetica", fontSize: "14", paddingTop: 2 }}>{e.description}</Text>
+                    <Text style={{ fontFamily: "Helvetica", fontSize: "14", paddingTop: 24 }}>{e.start_date} - {e.end_date},  {e.answers.items.length} answers</Text>
                 </View>
+
+                {Object.entries(e.answers.items[0].answers).map(([section, answers]) => (
+                    <View style={styles.section}>
+                        <Text style={{ fontFamily: "Helvetica-Bold", fontSize: "17" }}>{section}</Text>
+
+                        {answers.map((a, i) => (
+                            <View style={styles.question}>
+                                <Text style={{ fontFamily: "Helvetica", fontSize: "14", paddingVertical: 4 }}>{i + 1}. {getQuestion(section, i)}</Text>
+                                {/*<Image src={getChart(section, i)}/>*/}
+                                {/*<h6 style={{paddingLeft: 8, paddingTop: 10}}>Respondent comments</h6>*/}
+                                {/*{answers.filter((a) => a.comment !== null).map((a) => (*/}
+                                {/*<body style={{fontSize: 11, padding: 10, paddingBottom: 10}}>{a.comment}</body>*/}
+                                {/*))}*/}
+                            </View>
+                        ))}
+                    </View>
+                ))}
             </Page>
         </Document>
     );

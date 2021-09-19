@@ -72,30 +72,25 @@ export default function ReportGenerator(props) {
                         }}
                     >
                         <Typography variant='h5'>
-                            Chart type:
-                        </Typography>
-                        <Select value={chart} variant='standard' onChange={(e) => {
-                            setChart(e.target.value)
-                        }}>
-                            <MenuItem value={0}>Doughnut</MenuItem>
-                            <MenuItem value={1}>Bar</MenuItem>
-                        </Select>
-                    </Box>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 2,
-                            mb: 3,
-                        }}
-                    >
-                        <Typography variant='h5'>
                             File format:
                         </Typography>
                         <Select value={file} variant='standard' onChange={(e) => {setFile(e.target.value)}}>
                             <MenuItem value={0}>PDF</MenuItem>
                             <MenuItem value={1}>CSV</MenuItem>
                         </Select>
+                        {file === 0 &&
+                            <>
+                                <Typography variant='h5' sx={{ml: 4}}>
+                                    Chart type:
+                                </Typography>
+                                <Select value={chart} variant='standard' onChange={(e) => {
+                                    setChart(e.target.value)
+                                }}>
+                                    <MenuItem value={0}>Doughnut</MenuItem>
+                                    <MenuItem value={1}>Bar</MenuItem>
+                                </Select>
+                            </>
+                        }
                     </Box>
                     <FormControlLabel
                         control={
@@ -113,7 +108,7 @@ export default function ReportGenerator(props) {
                         Cancel
                     </Button>
                     <Button>
-                        <PDFDownloadLink document={<Report/>} fileName={`${evaluation.name}.pdf`}>
+                        <PDFDownloadLink document={<Report evaluation={evaluation}/>} fileName={`${evaluation.name}.pdf`}>
                             {({ blob, url, loading, error }) =>
                                 loading ? 'Generating...' : 'Download'
                             }
