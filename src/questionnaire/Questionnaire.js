@@ -26,6 +26,7 @@ class Questionnaire extends React.Component {
             name: "",
             email: null,
             submitted: false,
+            evaluationName: "",
             owner: ""
         };
         this.firstSection = React.createRef()
@@ -47,7 +48,7 @@ class Questionnaire extends React.Component {
                 evaluation: evaluation.status !== 0 ? -1 : evaluation,
                 enabledSections: enabledSections,
                 answers: answers,
-                name: evaluation.name,
+                evaluationName: evaluation.name,
                 owner: evaluation.owner
             })
             console.log(apiData.data.getEvaluation)
@@ -103,7 +104,7 @@ class Questionnaire extends React.Component {
         return (
             <Box>
                 <Container sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
-                    <Typography variant="h5">{this.state.name} by {this.state.owner}</Typography>
+                    <Typography variant="h5">{this.state.evaluationName} by {this.state.owner}</Typography>
                     <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px"}}>
                         <CardContent>
                             {this.state.evaluation !== -1 ?
