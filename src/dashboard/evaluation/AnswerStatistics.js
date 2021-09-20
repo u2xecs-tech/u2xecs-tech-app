@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import choiceColors from '../../theme/colors';
 import labels from '../../theme/labels';
+import sectionNames from "./sectionNames";
 
 class AnswerStatistics extends React.Component {
     constructor(props) {
@@ -121,7 +122,7 @@ class AnswerStatistics extends React.Component {
                                         this.setState({section: e.target.value, question: 0})
                                     }}>
                                         {Object.keys(sections).map((s) => (
-                                            <MenuItem value={s}>{s}</MenuItem>
+                                            <MenuItem value={s}>{sectionNames[s]}</MenuItem>
                                         ))}
                                     </Select>
                                     <Select value={this.state.question} variant='standard' onChange={(e) => {

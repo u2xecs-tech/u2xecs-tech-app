@@ -25,7 +25,8 @@ class Questionnaire extends React.Component {
             answers: {},
             name: "",
             email: null,
-            submitted: false
+            submitted: false,
+            owner: ""
         };
         this.firstSection = React.createRef()
     }
@@ -45,7 +46,9 @@ class Questionnaire extends React.Component {
             this.setState({
                 evaluation: evaluation.status !== 0 ? -1 : evaluation,
                 enabledSections: enabledSections,
-                answers: answers
+                answers: answers,
+                name: evaluation.name,
+                owner: evaluation.owner
             })
             console.log(apiData.data.getEvaluation)
         }).catch((error) => {
@@ -99,7 +102,8 @@ class Questionnaire extends React.Component {
         const windowSize = this.props.windowSize
         return (
             <Box>
-                <Container sx={{height: windowSize.height - 124, display: "flex", alignItems: "center"}}>
+                <Container sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
+                    <Typography variant="body4">{this.state.name} by {this.state.owner}</Typography>
                     <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px"}}>
                         <CardContent>
                             {this.state.evaluation !== -1 ?

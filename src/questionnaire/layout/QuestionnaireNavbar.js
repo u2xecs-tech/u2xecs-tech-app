@@ -9,9 +9,9 @@ const DashboardNavbar = () => {
                     U2XECS
                 </Typography>
                 <Box sx={{flexGrow: 1}}/>
-                <Typography sx={{pr: 2}}>
-                    Evaluation Name by Evaluation Owner
-                </Typography>
+                {/*<Typography sx={{pr: 2}}>*/}
+                {/*    Evaluation Name by Evaluation Owner*/}
+                {/*</Typography>*/}
             </Toolbar>
         </AppBar>
     );

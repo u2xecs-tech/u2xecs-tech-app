@@ -8,18 +8,7 @@ import moment from "moment";
 import {Box, Chip, Typography} from "@material-ui/core";
 import {quiz} from "../../quiz";
 import AlertNoActionDialog from "../util/AlertNoActionDialog";
-
-const sectionNames = [
-    'User Satisfaction',
-    'Efficiency',
-    'Effectiveness',
-    'Generic UX',
-    'Affection/Emotion',
-    'Enjoyment/Fun',
-    'Aesthetics/Appeal',
-    'Engagement/Flow',
-    'Motivation'
-]
+import sectionNames from "./sectionNames";
 
 export default function RespondentAnswers(props) {
     const [open, setOpen] = React.useState(false);
