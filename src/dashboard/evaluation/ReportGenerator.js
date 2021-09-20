@@ -140,7 +140,7 @@ export default function ReportGenerator(props) {
     return (
         <div>
             <Button sx={{mx: 1}} color="primary" variant="contained" onClick={handleClickOpen('paper')}
-                    disabled={typeof props.evaluation.answers.items === 'undefined'}>
+                    disabled={typeof e.answers.items === 'undefined' || e.answers.items.length === 0}>
                 Generate report
             </Button>
             <Dialog
