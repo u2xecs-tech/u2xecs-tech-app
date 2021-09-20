@@ -56,7 +56,7 @@ const Evaluation = () => {
                             <Description sx={{height: '100%'}} description={evaluation.description}/>
                         </Grid>
                         <Grid item lg={2} sm={6} xl={2} xs={12}>
-                            <Answers sx={{height: '100%'}} number={evaluation.answers.length}/>
+                            <Answers sx={{height: '100%'}} number={evaluation.answers.items.length}/>
                         </Grid>
                         <Grid item lg={3} sm={6} xl={3} xs={12}>
                             <EvaluationLink sx={{height: '100%'}} link={evaluation.link}/>
