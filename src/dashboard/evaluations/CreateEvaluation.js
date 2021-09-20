@@ -91,7 +91,7 @@ export default function CreateEvaluation(props) {
             handleClose()
             alert('Evaluation created successfully.')
             console.log(data)
-            navigate('/evaluation/' + data.createEvaluation.id)
+            navigate('/evaluation/' + data.data.createEvaluation.id)
         }).catch((error) => {
             handleClose()
             alert('error:' + error)
@@ -150,15 +150,15 @@ export default function CreateEvaluation(props) {
                                     onChange={(e) => setDescription(e.target.value)}
                                     inputProps={{ maxLength: 200 }}
                                 />
-                                <TextField
-                                    sx={{pb: 4}}
-                                    variant="standard"
-                                    label="Note for respondents"
-                                    helperText="This will be shown to your respondents when they first open the evaluation. (max: 200 characters)"
-                                    value={disclaimer}
-                                    onChange={(e) => setDisclaimer(e.target.value)}
-                                    inputProps={{ maxLength: 200 }}
-                                />
+                                {/*<TextField*/}
+                                {/*    sx={{pb: 4}}*/}
+                                {/*    variant="standard"*/}
+                                {/*    label="Note for respondents"*/}
+                                {/*    helperText="This will be shown to your respondents when they first open the evaluation. (max: 200 characters)"*/}
+                                {/*    value={disclaimer}*/}
+                                {/*    onChange={(e) => setDisclaimer(e.target.value)}*/}
+                                {/*    inputProps={{ maxLength: 200 }}*/}
+                                {/*/>*/}
                                 <Typography variant='caption' color='red'>
                                     You will NOT be able to change these settings later.
                                 </Typography>
