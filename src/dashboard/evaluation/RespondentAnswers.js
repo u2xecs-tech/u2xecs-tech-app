@@ -9,18 +9,6 @@ import {Box, Chip, Typography} from "@material-ui/core";
 import {quiz} from "../../quiz";
 import AlertNoActionDialog from "../util/AlertNoActionDialog";
 
-const sectionNames = [
-    'User Satisfaction',
-    'Efficiency',
-    'Effectiveness',
-    'Generic UX',
-    'Affection/Emotion',
-    'Enjoyment/Fun',
-    'Aesthetics/Appeal',
-    'Engagement/Flow',
-    'Motivation'
-]
-
 export default function RespondentAnswers(props) {
     const [open, setOpen] = React.useState(false);
     const [scroll, setScroll] = React.useState('paper');
@@ -33,6 +21,8 @@ export default function RespondentAnswers(props) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const sectionNames = Object.keys(quiz)
 
     const getQuestion = (s, q) => {
         return quiz[sectionNames[s]][q]
