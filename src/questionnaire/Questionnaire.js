@@ -39,7 +39,7 @@ class Questionnaire extends React.Component {
             const evaluation = apiData.data.getEvaluation
             const enabledSections = JSON.parse(evaluation.enabled_sections)
             const answers = {}
-            enabledSections.map((section) => {
+            enabledSections.forEach((section) => {
                 answers[section] = []
             })
             this.setState({
@@ -71,6 +71,10 @@ class Questionnaire extends React.Component {
             return
         }
 
+        if (this.state.name === "" /*|| not all questions and boxes answered*/) {
+            return
+        }
+
         evt.preventDefault()
         const start_date = Date.now()
         const formData = { name: this.state.name, email: this.state.email, date: start_date.toString(), answers: JSON.stringify(this.state.answers), evaluationID: this.state.evaluation.id };
@@ -86,12 +90,6 @@ class Questionnaire extends React.Component {
     startQuiz() {
         if (this.state.name !== "") {
             this.firstSection.current.scrollIntoView({ behavior: 'smooth' })
-        }
-    }
-
-    submitAnswers() {
-        if (this.state.name !== "" /*&& all questions and boxes answered*/) {
-            // submit
         }
     }
 

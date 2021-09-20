@@ -5,9 +5,8 @@ import EvaluationsToolbar from "./EvaluationsToolbar";
 import React from 'react';
 import {Link} from "react-router-dom";
 import { listEvaluations } from '../../graphql/queries';
-import { createEvaluation as createEvaluationMutation, deleteEvaluation } from '../../graphql/mutations';
+import { createEvaluation as createEvaluationMutation } from '../../graphql/mutations';
 import { API } from 'aws-amplify';
-import crypto from 'crypto';
 import Auth from "@aws-amplify/auth";
 
 class Evaluations extends React.Component {

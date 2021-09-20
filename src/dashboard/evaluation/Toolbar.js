@@ -10,7 +10,7 @@ const Toolbar = (props) => {
     const navigate = useNavigate();
     const evaluation = props.evaluation
     const [status, setStatus] = useState(0)
-    if (status != evaluation.status) {
+    if (status !== evaluation.status) {
         setStatus(evaluation.status)
     }
 
