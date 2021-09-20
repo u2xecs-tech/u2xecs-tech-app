@@ -8,7 +8,6 @@ import moment from "moment";
 import {Box, Chip, Typography} from "@material-ui/core";
 import {quiz} from "../../quiz";
 import AlertNoActionDialog from "../util/AlertNoActionDialog";
-import sectionNames from "./sectionNames";
 
 export default function RespondentAnswers(props) {
     const [open, setOpen] = React.useState(false);
@@ -22,6 +21,8 @@ export default function RespondentAnswers(props) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const sectionNames = Object.keys(quiz)
 
     const getQuestion = (s, q) => {
         return quiz[sectionNames[s]][q]

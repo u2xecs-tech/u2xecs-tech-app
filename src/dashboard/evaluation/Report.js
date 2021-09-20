@@ -1,14 +1,17 @@
 import React from 'react';
 import {quiz} from "../../quiz";
 import {Document, Font, Image, Page, StyleSheet, Text, View} from '@react-pdf/renderer';
+import moment from "moment";
 
 export default function Report(props) {
     const e = props.evaluation
     const comments = props.comments
     const charts = props.charts
 
+    const sectionNames = Object.keys(quiz)
+
     const getQuestion = (s, q) => {
-        return quiz[s][q]
+        return quiz[sectionNames[s]][q]
     }
 
     const getComments = (s, q) => {
@@ -49,12 +52,12 @@ export default function Report(props) {
                     <Text style={{fontFamily: "Helvetica", fontSize: "17"}}>U2XECS Evaluation Report</Text>
                     <Text style={{fontFamily: "Helvetica-Bold", fontSize: "24", paddingTop: 16}}>{e.name}</Text>
                     <Text style={{fontFamily: "Helvetica", fontSize: "14", paddingTop: 2}}>{e.description}</Text>
-                    <Text style={{fontFamily: "Helvetica", fontSize: "14", paddingTop: 24}}>{e.start_date} - {e.end_date}, {e.answers.items.length} answers</Text>
+                    <Text style={{fontFamily: "Helvetica", fontSize: "14", paddingTop: 24}}>{moment(Date(e.start_date)).format('DD/MM/YYYY')} - {moment(Date(e.end_date)).format('DD/MM/YYYY')}, {e.answers.items.length} answers</Text>
                 </View>
 
                 {Object.entries(e.answers.items[0].answers).map(([section, answers]) => (
                     <View style={styles.section}>
-                        <Text style={{fontFamily: "Helvetica-Bold", fontSize: "17"}}>{section}</Text>
+                        <Text style={{fontFamily: "Helvetica-Bold", fontSize: "17"}}>{sectionNames[section]}</Text>
 
                         {answers.map((a, i) => (
                             <View style={styles.question}>

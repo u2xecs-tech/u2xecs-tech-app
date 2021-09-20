@@ -14,7 +14,9 @@ import {
 } from '@material-ui/core';
 import choiceColors from '../../theme/colors';
 import labels from '../../theme/labels';
-import sectionNames from "./sectionNames";
+import {quiz} from "../../quiz";
+
+const sectionNames = Object.keys(quiz)
 
 class AnswerStatistics extends React.Component {
     constructor(props) {
