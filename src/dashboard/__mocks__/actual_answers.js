@@ -3,9 +3,9 @@ function getRandomInt(max) {
 }
 
 const comments = [
-    'I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it. I hated it.',
-    'It was disgusting. The developer should be ashamed.',
-    'Dishonor on YOU, dishonor on your COW.'
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut feugiat felis at orci bibendum, quis tincidunt tortor venenatis. Fusce blandit.',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tempor lorem et arcu rutrum rhoncus. Maecenas imperdiet lobortis urna, ac.',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam elementum enim in eros lobortis posuere. Nam congue lorem fringilla nunc luctus, in ornare nunc tincidunt. Aliquam sagittis erat vitae turpis tempus sagittis. Mauris at purus nec risus sollicitudin sollicitudin. Aliquam.'
 ]
 
 function getAnswer() {

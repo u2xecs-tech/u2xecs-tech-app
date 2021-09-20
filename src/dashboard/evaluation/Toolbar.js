@@ -2,10 +2,9 @@ import {Box, Button, Tooltip, Typography} from '@material-ui/core';
 import React, {useState} from "react";
 import AlertDialog from "../util/AlertDialog";
 import {useNavigate} from "react-router-dom";
-import Report from "./Report";
 import {updateEvaluation, deleteEvaluation} from "../../graphql/mutations";
 import {API} from "aws-amplify";
-
+import ReportGenerator from "./ReportGenerator";
 
 const Toolbar = (props) => {
     const navigate = useNavigate();
@@ -88,7 +87,7 @@ const Toolbar = (props) => {
                         alignItems: 'start'
                     }}
                 >
-                    <Report evaluation={evaluation}/>
+                    <ReportGenerator evaluation={evaluation}/>
                     {status === 1 ?
                         <Button sx={{mx: 1}} onClick={onClose}>{'Open'}</Button>
                         :
