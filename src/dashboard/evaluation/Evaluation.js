@@ -31,8 +31,13 @@ const Evaluation = () => {
 
     async function fetchEvaluation() {
         const apiData = await API.graphql({ query: getEvaluation, variables: { id: id } });
-        console.log(apiData.data.getEvaluation)
-        setEvaluation(apiData.data.getEvaluation)
+        let evaluation = apiData.data.getEvaluation
+        evaluation.answers.items = evaluation.answers.items.map((answer) => {
+            answer.answers = JSON.parse(answer.answers)
+            return answer
+        })
+        console.log(evaluation)
+        setEvaluation(evaluation)
     }
 
     return (
@@ -56,19 +61,19 @@ const Evaluation = () => {
                             <Description sx={{height: '100%'}} description={evaluation.description}/>
                         </Grid>
                         <Grid item lg={2} sm={6} xl={2} xs={12}>
-                            <Answers sx={{height: '100%'}} number={evaluation.answers.length}/>
+                            <Answers sx={{height: '100%'}} number={evaluation.answers.items.length}/>
                         </Grid>
                         <Grid item lg={3} sm={6} xl={3} xs={12}>
-                            <EvaluationLink sx={{height: '100%'}} link={evaluation.link}/>
+                            <EvaluationLink sx={{height: '100%'}} link={evaluation.id}/>
                         </Grid>
                         <Grid item lg={3} sm={6} xl={2} xs={12}>
                             <LastModification sx={{height: '100%'}} date={Date(evaluation.start_date)}/>
                         </Grid>
                         <Grid item lg={4} md={6} xl={4} xs={12}>
-                            <AnswerStatistics answers={evaluation.answers}/>
+                            <AnswerStatistics answers={evaluation.answers.items}/>
                         </Grid>
                         <Grid item lg={5} md={6} xl={8} xs={12}>
-                            <Respondents answers={evaluation.answers}/>
+                            <Respondents answers={evaluation.answers.items}/>
                         </Grid>
                         <Grid item lg={3} md={6} xl={8} xs={12}>
                             <Comments/>

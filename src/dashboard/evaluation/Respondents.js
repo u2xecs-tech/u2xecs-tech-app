@@ -18,7 +18,7 @@ const Respondents = (props) => (
         <CardHeader title="Respondents"/>
         <Divider/>
         {
-            props.answers.items.length === 0
+            props.answers.length === 0
                 ?
                 <Typography
                     variant='body'
@@ -36,14 +36,14 @@ const Respondents = (props) => (
                     <Box sx={{minWidth: 200, maxHeight: 615, overflow: 'auto'}}>
                         <Table>
                             <TableBody>
-                                {props.answers.items.map((a) => (
+                                {props.answers.map((a) => (
                                     <TableRow hover key={a.id}>
                                         <TableCell>{a.name}</TableCell>
                                         <TableCell>
-                                            {moment(a.date).format('DD/MM/YYYY')}
+                                            {moment(a.createdAt).format('DD/MM/YYYY')}
                                         </TableCell>
                                         <TableCell>
-                                            <RespondentAnswers name={a.name} date={a.date} answers={a.answers}/>
+                                            <RespondentAnswers name={a.name} date={a.createdAt} answers={a.answers}/>
                                         </TableCell>
                                     </TableRow>
                                 ))}

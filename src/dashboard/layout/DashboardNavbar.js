@@ -19,8 +19,12 @@ const DashboardNavbar = () => {
 
     const signOut = (e) => {
         e.preventDefault();
-        Auth.signOut();
-        window.location.reload();
+        Auth.signOut().then((data) => {
+            console.log(data)
+            window.location.reload();
+        }).catch((error) => {
+            console.log(error)
+        });
     }
 
     return (

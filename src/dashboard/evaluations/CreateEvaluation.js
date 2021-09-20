@@ -90,6 +90,7 @@ export default function CreateEvaluation(props) {
         props.addEval(title, description, disclaimer, enabled_sections).then((data) => {
             handleClose()
             alert('Evaluation created successfully.')
+            console.log(data)
             navigate('/evaluation/' + data.createEvaluation.id)
         }).catch((error) => {
             handleClose()

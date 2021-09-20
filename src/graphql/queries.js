@@ -1,6 +1,135 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const syncAnswers = /* GraphQL */ `
+  query SyncAnswers(
+    $filter: ModelAnswerFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAnswers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        evaluationID
+        name
+        email
+        answers
+        date
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        evaluation {
+          id
+          name
+          start_date
+          end_date
+          disclaimer
+          enabled_sections
+          description
+          status
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          owner
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getAnswer = /* GraphQL */ `
+  query GetAnswer($id: ID!) {
+    getAnswer(id: $id) {
+      id
+      evaluationID
+      name
+      email
+      answers
+      date
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      evaluation {
+        id
+        name
+        start_date
+        end_date
+        disclaimer
+        enabled_sections
+        description
+        status
+        answers {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+        comments {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const listAnswers = /* GraphQL */ `
+  query ListAnswers(
+    $filter: ModelAnswerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAnswers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        evaluationID
+        name
+        email
+        answers
+        date
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        evaluation {
+          id
+          name
+          start_date
+          end_date
+          disclaimer
+          enabled_sections
+          description
+          status
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          owner
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getEvaluation = /* GraphQL */ `
   query GetEvaluation($id: ID!) {
     getEvaluation(id: $id) {
@@ -11,20 +140,7 @@ export const getEvaluation = /* GraphQL */ `
       disclaimer
       enabled_sections
       description
-      link
       status
-      comments {
-        items {
-          id
-          evaluationID
-          content
-          date
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       answers {
         items {
           id
@@ -33,14 +149,37 @@ export const getEvaluation = /* GraphQL */ `
           email
           answers
           date
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       owner
+      comments {
+        items {
+          id
+          evaluationID
+          content
+          date
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -59,28 +198,41 @@ export const listEvaluations = /* GraphQL */ `
         disclaimer
         enabled_sections
         description
-        link
         status
-        comments {
-          nextToken
-        }
         answers {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        comments {
+          nextToken
+          startedAt
+        }
       }
       nextToken
+      startedAt
     }
   }
 `;
-export const getAnswer = /* GraphQL */ `
-  query GetAnswer($id: ID!) {
-    getAnswer(id: $id) {
-      id
-      evaluationID
-      evaluation {
+export const syncEvaluations = /* GraphQL */ `
+  query SyncEvaluations(
+    $filter: ModelEvaluationFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncEvaluations(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
         id
         name
         start_date
@@ -88,59 +240,24 @@ export const getAnswer = /* GraphQL */ `
         disclaimer
         enabled_sections
         description
-        link
         status
-        comments {
-          nextToken
-        }
         answers {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
-      }
-      name
-      email
-      answers
-      date
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listAnswers = /* GraphQL */ `
-  query ListAnswers(
-    $filter: ModelAnswerFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listAnswers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        evaluationID
-        evaluation {
-          id
-          name
-          start_date
-          end_date
-          disclaimer
-          enabled_sections
-          description
-          link
-          status
-          createdAt
-          updatedAt
-          owner
+        comments {
+          nextToken
+          startedAt
         }
-        name
-        email
-        answers
-        date
-        createdAt
-        updatedAt
       }
       nextToken
+      startedAt
     }
   }
 `;
@@ -149,6 +266,13 @@ export const getComment = /* GraphQL */ `
     getComment(id: $id) {
       id
       evaluationID
+      content
+      date
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       evaluation {
         id
         name
@@ -157,22 +281,22 @@ export const getComment = /* GraphQL */ `
         disclaimer
         enabled_sections
         description
-        link
         status
-        comments {
-          nextToken
-        }
         answers {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        comments {
+          nextToken
+          startedAt
+        }
       }
-      content
-      date
-      createdAt
-      updatedAt
       owner
     }
   }
@@ -187,6 +311,13 @@ export const listComments = /* GraphQL */ `
       items {
         id
         evaluationID
+        content
+        date
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
         evaluation {
           id
           name
@@ -195,19 +326,64 @@ export const listComments = /* GraphQL */ `
           disclaimer
           enabled_sections
           description
-          link
           status
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
-        content
-        date
-        createdAt
-        updatedAt
         owner
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncComments = /* GraphQL */ `
+  query SyncComments(
+    $filter: ModelCommentFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncComments(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        evaluationID
+        content
+        date
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        evaluation {
+          id
+          name
+          start_date
+          end_date
+          disclaimer
+          enabled_sections
+          description
+          status
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          owner
+        }
+        owner
+      }
+      nextToken
+      startedAt
     }
   }
 `;

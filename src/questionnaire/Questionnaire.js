@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import { API } from 'aws-amplify';
-import { listEvaluations } from "../graphql/queries";
+import { getEvaluationForQuestionnaire } from "../graphql/customQueries";
 import {quiz} from "../quiz";
 import Section from "./Section";
 import {createAnswer} from "../graphql/mutations";
@@ -31,19 +31,23 @@ class Questionnaire extends React.Component {
     }
 
     componentDidMount() {
-        API.graphql({ query: listEvaluations, variables: { filter: { link: { eq: this.props.link } } } }).then((apiData) => {
-            const enabledSections = JSON.parse(apiData.data.listEvaluations.items[0].enabled_sections)
+        API.graphql({
+            query: getEvaluationForQuestionnaire,
+            variables: { id: this.props.link },
+            authMode: 'AWS_IAM'
+        }).then((apiData) => {
+            const evaluation = apiData.data.getEvaluation
+            const enabledSections = JSON.parse(evaluation.enabled_sections)
             const answers = {}
             enabledSections.map((section) => {
                 answers[section] = []
             })
-            const evaluation = apiData.data.listEvaluations.items[0]
             this.setState({
                 evaluation: evaluation.status !== 0 ? -1 : evaluation,
                 enabledSections: enabledSections,
                 answers: answers
             })
-            console.log(JSON.parse(apiData.data.listEvaluations.items[0].enabled_sections))
+            console.log(apiData.data.getEvaluation)
         }).catch((error) => {
             console.log(error)
         })

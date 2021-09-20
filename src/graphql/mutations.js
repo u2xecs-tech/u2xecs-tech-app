@@ -1,6 +1,138 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createAnswer = /* GraphQL */ `
+  mutation CreateAnswer(
+    $input: CreateAnswerInput!
+    $condition: ModelAnswerConditionInput
+  ) {
+    createAnswer(input: $input, condition: $condition) {
+      id
+      evaluationID
+      name
+      email
+      answers
+      date
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      evaluation {
+        id
+        name
+        start_date
+        end_date
+        disclaimer
+        enabled_sections
+        description
+        status
+        answers {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+        comments {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const updateAnswer = /* GraphQL */ `
+  mutation UpdateAnswer(
+    $input: UpdateAnswerInput!
+    $condition: ModelAnswerConditionInput
+  ) {
+    updateAnswer(input: $input, condition: $condition) {
+      id
+      evaluationID
+      name
+      email
+      answers
+      date
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      evaluation {
+        id
+        name
+        start_date
+        end_date
+        disclaimer
+        enabled_sections
+        description
+        status
+        answers {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+        comments {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const deleteAnswer = /* GraphQL */ `
+  mutation DeleteAnswer(
+    $input: DeleteAnswerInput!
+    $condition: ModelAnswerConditionInput
+  ) {
+    deleteAnswer(input: $input, condition: $condition) {
+      id
+      evaluationID
+      name
+      email
+      answers
+      date
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      evaluation {
+        id
+        name
+        start_date
+        end_date
+        disclaimer
+        enabled_sections
+        description
+        status
+        answers {
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+        comments {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
 export const createEvaluation = /* GraphQL */ `
   mutation CreateEvaluation(
     $input: CreateEvaluationInput!
@@ -14,20 +146,7 @@ export const createEvaluation = /* GraphQL */ `
       disclaimer
       enabled_sections
       description
-      link
       status
-      comments {
-        items {
-          id
-          evaluationID
-          content
-          date
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       answers {
         items {
           id
@@ -36,14 +155,37 @@ export const createEvaluation = /* GraphQL */ `
           email
           answers
           date
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       owner
+      comments {
+        items {
+          id
+          evaluationID
+          content
+          date
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -60,20 +202,7 @@ export const updateEvaluation = /* GraphQL */ `
       disclaimer
       enabled_sections
       description
-      link
       status
-      comments {
-        items {
-          id
-          evaluationID
-          content
-          date
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       answers {
         items {
           id
@@ -82,14 +211,37 @@ export const updateEvaluation = /* GraphQL */ `
           email
           answers
           date
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       owner
+      comments {
+        items {
+          id
+          evaluationID
+          content
+          date
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+        startedAt
+      }
     }
   }
 `;
@@ -106,20 +258,7 @@ export const deleteEvaluation = /* GraphQL */ `
       disclaimer
       enabled_sections
       description
-      link
       status
-      comments {
-        items {
-          id
-          evaluationID
-          content
-          date
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       answers {
         items {
           id
@@ -128,125 +267,37 @@ export const deleteEvaluation = /* GraphQL */ `
           email
           answers
           date
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       owner
-    }
-  }
-`;
-export const createAnswer = /* GraphQL */ `
-  mutation CreateAnswer(
-    $input: CreateAnswerInput!
-    $condition: ModelAnswerConditionInput
-  ) {
-    createAnswer(input: $input, condition: $condition) {
-      id
-      evaluationID
-      evaluation {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        link
-        status
-        comments {
-          nextToken
+      comments {
+        items {
+          id
+          evaluationID
+          content
+          date
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          owner
         }
-        answers {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
+        nextToken
+        startedAt
       }
-      name
-      email
-      answers
-      date
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateAnswer = /* GraphQL */ `
-  mutation UpdateAnswer(
-    $input: UpdateAnswerInput!
-    $condition: ModelAnswerConditionInput
-  ) {
-    updateAnswer(input: $input, condition: $condition) {
-      id
-      evaluationID
-      evaluation {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        link
-        status
-        comments {
-          nextToken
-        }
-        answers {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      name
-      email
-      answers
-      date
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteAnswer = /* GraphQL */ `
-  mutation DeleteAnswer(
-    $input: DeleteAnswerInput!
-    $condition: ModelAnswerConditionInput
-  ) {
-    deleteAnswer(input: $input, condition: $condition) {
-      id
-      evaluationID
-      evaluation {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        link
-        status
-        comments {
-          nextToken
-        }
-        answers {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-      }
-      name
-      email
-      answers
-      date
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -258,6 +309,13 @@ export const createComment = /* GraphQL */ `
     createComment(input: $input, condition: $condition) {
       id
       evaluationID
+      content
+      date
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       evaluation {
         id
         name
@@ -266,22 +324,22 @@ export const createComment = /* GraphQL */ `
         disclaimer
         enabled_sections
         description
-        link
         status
-        comments {
-          nextToken
-        }
         answers {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        comments {
+          nextToken
+          startedAt
+        }
       }
-      content
-      date
-      createdAt
-      updatedAt
       owner
     }
   }
@@ -294,6 +352,13 @@ export const updateComment = /* GraphQL */ `
     updateComment(input: $input, condition: $condition) {
       id
       evaluationID
+      content
+      date
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       evaluation {
         id
         name
@@ -302,22 +367,22 @@ export const updateComment = /* GraphQL */ `
         disclaimer
         enabled_sections
         description
-        link
         status
-        comments {
-          nextToken
-        }
         answers {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        comments {
+          nextToken
+          startedAt
+        }
       }
-      content
-      date
-      createdAt
-      updatedAt
       owner
     }
   }
@@ -330,6 +395,13 @@ export const deleteComment = /* GraphQL */ `
     deleteComment(input: $input, condition: $condition) {
       id
       evaluationID
+      content
+      date
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
       evaluation {
         id
         name
@@ -338,22 +410,22 @@ export const deleteComment = /* GraphQL */ `
         disclaimer
         enabled_sections
         description
-        link
         status
-        comments {
-          nextToken
-        }
         answers {
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         owner
+        comments {
+          nextToken
+          startedAt
+        }
       }
-      content
-      date
-      createdAt
-      updatedAt
       owner
     }
   }

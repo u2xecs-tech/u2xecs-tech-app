@@ -5,7 +5,7 @@ import EvaluationsToolbar from "./EvaluationsToolbar";
 import React from 'react';
 import {Link} from "react-router-dom";
 import { listEvaluations } from '../../graphql/queries';
-import { createEvaluation as createEvaluationMutation } from '../../graphql/mutations';
+import { createEvaluation as createEvaluationMutation, deleteEvaluation } from '../../graphql/mutations';
 import { API } from 'aws-amplify';
 import crypto from 'crypto';
 import Auth from "@aws-amplify/auth";
@@ -27,7 +27,7 @@ class Evaluations extends React.Component {
         }).then((username) => {
             API.graphql({ query: listEvaluations }).then((apiData) => {
                 console.log(apiData.data.listEvaluations.items)
-                this.setState({evaluations: apiData.data.listEvaluations.items})
+                this.setState({evaluations: apiData.data.listEvaluations.items.filter((e) => {return e._deleted !== true})})
             }).catch((error) => {
                 console.log(error)
             })
@@ -46,9 +46,8 @@ class Evaluations extends React.Component {
     }
 
     addEvaluation = (name, description, disclaimer, enabled_sections) => {
-        const link = crypto.randomBytes(10).toString('hex');
         const start_date = Date.now()
-        const formData = { name: name, description: description, disclaimer: disclaimer, enabled_sections: enabled_sections, link: link, start_date: start_date.toString(), status: 0 };
+        const formData = { name: name, description: description, disclaimer: disclaimer, enabled_sections: enabled_sections, start_date: start_date.toString(), status: 0 };
         return API.graphql({ query: createEvaluationMutation, variables: { input: formData }})
     }
 

@@ -10,38 +10,52 @@ import {API} from "aws-amplify";
 const Toolbar = (props) => {
     const navigate = useNavigate();
     const evaluation = props.evaluation
-    const [status, setStatus] = useState(evaluation.status)
+    const [status, setStatus] = useState(0)
+    if (status != evaluation.status) {
+        setStatus(evaluation.status)
+    }
 
     // 0:open <-> 1:closed <-> 2:archived
 
     const onClose = () => {
         let msg = ''
+        let statusToBeSaved = 0
         switch (status) {
-            case 0: setStatus(1); msg = 'Evaluation closed.'; break;
+            case 0: setStatus(1); statusToBeSaved = 1; msg = 'Evaluation closed.'; break;
             case 1: case 2: setStatus(0); msg = 'Evaluation opened.'; break;
             default: break;
         }
-        API.graphql({ query: updateEvaluation, variables: { id: evaluation.id, input: { status : status }}}).then(() => {
+        API.graphql({ query: updateEvaluation, variables: { input: { id: evaluation.id, status : statusToBeSaved, _version: evaluation._version }}}).then((data) => {
+            console.log(data)
             alert(msg)
+        }).catch((error) => {
+            console.log(error)
+            alert(error)
         })
     }
 
     const onArchive = () => {
         let msg = ''
+        let statusToBeSaved = 1
         switch (status) {
-            case 0: case 1: setStatus(2); msg = 'Evaluation archived'; break;
+            case 0: case 1: setStatus(2); statusToBeSaved = 2; msg = 'Evaluation archived'; break;
             case 2: setStatus(1); msg = 'Evaluation unarchived'; break;
             default: break;
         }
-        API.graphql({ query: updateEvaluation, variables: { id: evaluation.id, input: { status : status }}}).then(() => {
+        API.graphql({ query: updateEvaluation, variables: { input: { id: evaluation.id, status : statusToBeSaved, _version: evaluation._version }}}).then(() => {
             alert(msg)
+        }).catch((error) => {
+            alert(error)
         })
     }
 
     const onDelete = () => {
-        API.graphql({ query: deleteEvaluation, variables: { id: evaluation.id }}).then(() => {
+        console.log("onDelete")
+        API.graphql({ query: deleteEvaluation, variables: { input: { id: evaluation.id, _version: evaluation._version }}}).then(() => {
             alert('Evaluation successfully deleted.')
             navigate('/')
+        }).catch((error) => {
+            alert(error)
         })
     }
 

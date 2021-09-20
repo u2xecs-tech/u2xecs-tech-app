@@ -20,7 +20,7 @@ class AnswerStatistics extends React.Component {
         super(props);
 
         this.state = {
-            section: 'User Satisfaction',
+            section: 0,
             question: 0,
             chart: 0,
         };
@@ -28,7 +28,7 @@ class AnswerStatistics extends React.Component {
 
     getStats() {
         const stats = [0, 0, 0, 0, 0]
-        const answers = this.props.answers.items.map((a) => a.answers[this.state.section][this.state.question].answer)
+        const answers = this.props.answers.map((a) => a.answers[this.state.section][this.state.question].answer)
         answers.forEach((a) => {
             stats[a]++
         })
@@ -88,14 +88,14 @@ class AnswerStatistics extends React.Component {
             }
         };
 
-        const sections = this.props.answers.items.length > 0 ? this.props.answers.items[0].answers : []
+        const sections = this.props.answers.length > 0 ? this.props.answers[0].answers : []
 
         return (
             <Card {...this.props}>
                 <CardHeader title="Answer Statistics"/>
                 <Divider/>
                 {
-                    this.props.answers.items.length === 0
+                    this.props.answers.length === 0
                         ?
                         <Typography
                             variant='body'

@@ -12,7 +12,7 @@ const copyToClipboard = (text) => {
 }
 
 const EvaluationLink = (props) => {
-    const url = process.env.PUBLIC_URL + "/questionnaire/" + props.link
+    const url = "https://master.d3ai0zbesal3ze.amplifyapp.com" + "/questionnaire/" + props.link
 
     return (
         <Card {...props}>

@@ -9,6 +9,18 @@ import {Box, Chip, Typography} from "@material-ui/core";
 import {quiz} from "../../quiz";
 import AlertNoActionDialog from "../util/AlertNoActionDialog";
 
+const sectionNames = [
+    'User Satisfaction',
+    'Efficiency',
+    'Effectiveness',
+    'Generic UX',
+    'Affection/Emotion',
+    'Enjoyment/Fun',
+    'Aesthetics/Appeal',
+    'Engagement/Flow',
+    'Motivation'
+]
+
 export default function RespondentAnswers(props) {
     const [open, setOpen] = React.useState(false);
     const [scroll, setScroll] = React.useState('paper');
@@ -23,7 +35,7 @@ export default function RespondentAnswers(props) {
     };
 
     const getQuestion = (s, q) => {
-        return quiz[s][q]
+        return quiz[sectionNames[s]][q]
     }
 
     const getAnswerChip = (a) => {
@@ -71,7 +83,7 @@ export default function RespondentAnswers(props) {
                     {
                         Object.entries(props.answers).map(([section, answers]) => (
                             <Box sx={{pb: 2}}>
-                                <Typography gutterBottom variant='h3'>{section}</Typography>
+                                <Typography gutterBottom variant='h3'>{sectionNames[section]}</Typography>
                                 {
                                     answers.map((a, i) => (
                                         <Box
