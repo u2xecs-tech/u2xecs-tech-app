@@ -103,7 +103,7 @@ class Questionnaire extends React.Component {
         return (
             <Box>
                 <Container sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
-                    <Typography variant="body4">{this.state.name} by {this.state.owner}</Typography>
+                    <Typography variant="h5">{this.state.name} by {this.state.owner}</Typography>
                     <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px"}}>
                         <CardContent>
                             {this.state.evaluation !== -1 ?
