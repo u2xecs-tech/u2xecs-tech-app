@@ -27,6 +27,7 @@ class Questionnaire extends React.Component {
             email: null,
             owner: "",
             evaluationName: "",
+            submitted: false,
         };
 
         let sectionRefs = []
@@ -75,6 +76,11 @@ class Questionnaire extends React.Component {
     updateEmail= (evt) => this.setState({ email: evt.target.value })
 
     sendAnswers(evt) {
+        if (this.state.submitted) {
+            alert("This evaluation has already been submitted. To answer again, reload the page.")
+            return
+        }
+
         if (this.state.name === "") {
             this.sectionRefs[0].current.scrollIntoView({ behavior: 'smooth' })
             return
@@ -93,8 +99,7 @@ class Questionnaire extends React.Component {
         const formData = { name: this.state.name, email: this.state.email, date: start_date.toString(), answers: JSON.stringify(this.state.answers), evaluationID: this.state.evaluation.id };
         API.graphql({ query: createAnswer, variables: { input: formData }}).then((answer) => {
             console.log(answer)
-            window.open("about:blank", "_self")
-            window.close()
+            this.setState({ submitted: true })
         }).catch((error) => {
             console.log(error)
         })
@@ -111,11 +116,12 @@ class Questionnaire extends React.Component {
         return (
             <Box>
                 <Container sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
-                    <Typography variant="h5">{this.state.evaluationName} by {this.state.owner}</Typography>
                     <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px"}}>
                         <CardContent>
                             {this.state.evaluation !== -1 ?
                                 <div>
+                                    <Typography variant="h5">{this.state.evaluationName} by {this.state.owner}</Typography>
+                                    <br/><br/>
                                     <Typography variant="h1">Hi! Please tell us who you are</Typography><br/>
                                     <TextField sx={{p: 2}} fullWidth placeholder="Please enter your full name"
                                                onChange={this.updateName.bind(this)}/>
@@ -153,7 +159,10 @@ class Questionnaire extends React.Component {
                             {/*<TextField sx={{p: 2}} fullWidth placeholder="Your email" onChange={updateEmail}/>*/}
                         </CardContent>
                         <CardActions>
-                            <Button variant="contained" color="primary" size="large" style={{margin: "auto"}} onClick={this.sendAnswers.bind(this)}>Submit answers</Button>
+                            <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
+                                    onClick={this.sendAnswers.bind(this)}
+                                    disabled={this.state.submitted}
+                            >{this.state.submitted ? "Submitted" : "Submit answers"}</Button>
                         </CardActions>
                     </Card>
                 </Container>
