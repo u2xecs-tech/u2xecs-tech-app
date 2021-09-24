@@ -11,7 +11,7 @@ import {
 import React, {createRef} from 'react';
 import { API } from 'aws-amplify';
 import { getEvaluationForQuestionnaire } from "../graphql/customQueries";
-import {quiz} from "../quiz";
+import {getAbsoluteNumber, quiz} from "../quiz";
 import Section from "./Section";
 import {createAnswer} from "../graphql/mutations";
 import {usingWindowSize} from "./util/useWindowSize";
@@ -30,11 +30,11 @@ class Questionnaire extends React.Component {
             submitted: false,
         };
 
-        let sectionRefs = []
-        for (let i = 0; i < 10; i++) {
-            sectionRefs.push(createRef())
+        let questionRefs = []
+        for (let i = 0; i < 31; i++) {
+            questionRefs.push(createRef())
         }
-        this.sectionRefs = sectionRefs
+        this.questionRefs = questionRefs
     }
 
     componentDidMount() {
@@ -73,25 +73,34 @@ class Questionnaire extends React.Component {
 
     updateName = (evt) => this.setState({ name: evt.target.value })
 
-    updateEmail= (evt) => this.setState({ email: evt.target.value })
+    updateEmail = (evt) => this.setState({ email: evt.target.value })
 
     sendAnswers(evt) {
         if (this.state.submitted) {
-            alert("This evaluation has already been submitted. To answer again, reload the page.")
             return
         }
 
         if (this.state.name === "") {
-            this.sectionRefs[0].current.scrollIntoView({ behavior: 'smooth' })
+            this.questionRefs[0].current.scrollIntoView({ behavior: 'smooth' })
             return
         }
 
-        for (const section in this.enabledSections) {
-            for (const question in quiz[Object.keys(quiz)[section]]) {
-                if (typeof this.answers[section][question] === "undefined") {
-                    this.sectionRefs[section].current.scrollIntoView({behavior: 'smooth'})
+        let out = false;
+        this.state.enabledSections.every((section) => {
+            quiz[Object.keys(quiz)[section]].every((question, j) => {
+                if (typeof this.state.answers[section][j] === "undefined"
+                    || (this.state.answers[section][j].answer !== 0 && [null, ""].includes(this.state.answers[section][j].comment))) {
+                    this.getRef(section, j).current.scrollIntoView({behavior: 'smooth'})
+                    // flash red
+                    out = true
+                    return false
                 }
-            }
+                return true
+            })
+            return !out
+        })
+        if (out) {
+            return
         }
 
         evt.preventDefault()
@@ -107,15 +116,19 @@ class Questionnaire extends React.Component {
 
     startQuiz() {
         if (this.state.name !== "") {
-            this.sectionRefs[1].current.scrollIntoView({ behavior: 'smooth' })
+            this.questionRefs[1].current.scrollIntoView({ behavior: 'smooth' })
         }
+    }
+
+    getRef(s, q) {
+        return this.questionRefs[getAbsoluteNumber(s, q)+2]
     }
 
     render() {
         const windowSize = this.props.windowSize
         return (
             <Box>
-                <Container sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
+                <Container ref={this.questionRefs[0]} sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
                     <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px"}}>
                         <CardContent>
                             {this.state.evaluation !== -1 ?
@@ -136,19 +149,22 @@ class Questionnaire extends React.Component {
                         {this.state.evaluation !== -1 &&
                         <CardActions>
                             <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
-                                    onClick={this.startQuiz.bind(this)}>Let's go!</Button>
+                                    onClick={this.startQuiz.bind(this)}
+                                    disabled={this.state.name === "" || this.state.evaluation === null}
+                            >Let's go!</Button>
                         </CardActions>
                         }
                     </Card>
                 </Container>
-                {this.state.evaluation !== -1 &&
-                this.state.enabledSections.map((section, i) => (
-                    <div ref={this.sectionRefs[i+1]}>
-                        <Section sections={section} title={Object.keys(quiz)[section]}
-                                 questions={quiz[Object.keys(quiz)[section]]}
-                                 updateAnswer={this.updateAnswer.bind(this)}/>
-                    </div>
-                ))
+                {this.state.evaluation &&
+                    this.state.enabledSections.map((section, i) => (
+                        <div ref={i === 0 ? this.questionRefs[1] : null}>
+                            <Section section={section}
+                                     updateAnswer={this.updateAnswer.bind(this)}
+                                     getRef={this.getRef.bind(this)}
+                            />
+                        </div>
+                    ))
                 }
                 {this.state.evaluation !== -1 &&
                 <Container sx={{height: windowSize.height - 4, display: "flex", alignItems: "center"}}>
@@ -161,7 +177,7 @@ class Questionnaire extends React.Component {
                         <CardActions>
                             <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
                                     onClick={this.sendAnswers.bind(this)}
-                                    disabled={this.state.submitted}
+                                    disabled={this.state.submitted || this.state.evaluation === null}
                             >{this.state.submitted ? "Submitted" : "Submit answers"}</Button>
                         </CardActions>
                     </Card>
