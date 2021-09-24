@@ -28,6 +28,7 @@ class Questionnaire extends React.Component {
             owner: "",
             evaluationName: "",
             submitted: false,
+            flashingQuestion: -1,
         };
 
         let questionRefs = []
@@ -81,6 +82,7 @@ class Questionnaire extends React.Component {
         }
 
         if (this.state.name === "") {
+            alert("Please input a name.")
             this.questionRefs[0].current.scrollIntoView({ behavior: 'smooth' })
             return
         }
@@ -91,7 +93,7 @@ class Questionnaire extends React.Component {
                 if (typeof this.state.answers[section][j] === "undefined"
                     || (this.state.answers[section][j].answer !== 0 && [null, ""].includes(this.state.answers[section][j].comment))) {
                     this.getRef(section, j).current.scrollIntoView({behavior: 'smooth'})
-                    // flash red
+                    this.flash(getAbsoluteNumber(section, j)).then()
                     out = true
                     return false
                 }
@@ -122,6 +124,21 @@ class Questionnaire extends React.Component {
 
     getRef(s, q) {
         return this.questionRefs[getAbsoluteNumber(s, q)+2]
+    }
+
+    timeout(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async flash(q) {
+        const flashInterval = 80
+        await this.timeout(100)
+        for (let i = 0; i < 5; i++) {
+            this.setState({ flashingQuestion: q })
+            await this.timeout(flashInterval)
+            this.setState({ flashingQuestion: -1 })
+            await this.timeout(flashInterval)
+        }
     }
 
     render() {
@@ -162,6 +179,7 @@ class Questionnaire extends React.Component {
                             <Section section={section}
                                      updateAnswer={this.updateAnswer.bind(this)}
                                      getRef={this.getRef.bind(this)}
+                                     flashingQuestion={this.state.flashingQuestion}
                             />
                         </div>
                     ))

@@ -47,6 +47,13 @@ class Section extends React.Component {
         return this.state.answers[idx].answer === i ? 1 : 0.4
     }
 
+    isRed(idx) {
+        if (this.props.flashingQuestion !== -1) {
+            console.log(getAbsoluteNumber(this.props.section, idx), this.props.flashingQuestion)
+        }
+        return getAbsoluteNumber(this.props.section, idx) === this.props.flashingQuestion
+    }
+
     render() {
         return (
             <Box sx={{
@@ -62,10 +69,12 @@ class Section extends React.Component {
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "flex-start",
-                            my: 4,
+                            py: 4,
                             maxWidth: 880,
                         }}>
-                            <Typography variant="h4" sx={{m: 1}}>{idx + 1}. {question}</Typography>
+                            <Typography variant="h4" sx={{m: 1, color: this.isRed(idx) ? "red" : "black"}}>
+                                {idx + 1}. {question}
+                            </Typography>
                             <Box>
                                 {labels.map((label, i) => (
                                     <Button variant="contained"
