@@ -8,7 +8,7 @@ import {
     TextField,
     Typography
 } from '@material-ui/core';
-import React from 'react';
+import React, {createRef} from 'react';
 import { API } from 'aws-amplify';
 import { getEvaluationForQuestionnaire } from "../graphql/customQueries";
 import {quiz} from "../quiz";
@@ -25,11 +25,15 @@ class Questionnaire extends React.Component {
             answers: {},
             name: "",
             email: null,
-            submitted: false,
+            owner: "",
             evaluationName: "",
-            owner: ""
         };
-        this.firstSection = React.createRef()
+
+        let sectionRefs = []
+        for (let i = 0; i < 10; i++) {
+            sectionRefs.push(createRef())
+        }
+        this.sectionRefs = sectionRefs
     }
 
     componentDidMount() {
@@ -51,6 +55,7 @@ class Questionnaire extends React.Component {
                 evaluationName: evaluation.name,
                 owner: evaluation.owner
             })
+
             console.log(apiData.data.getEvaluation)
         }).catch((error) => {
             console.log(error)
@@ -70,13 +75,17 @@ class Questionnaire extends React.Component {
     updateEmail= (evt) => this.setState({ email: evt.target.value })
 
     sendAnswers(evt) {
-        if (this.state.submitted === true) {
-            alert("You cannot resubmit the same answers, please reload the page to retake the questionnaire.")
+        if (this.state.name === "") {
+            this.sectionRefs[0].current.scrollIntoView({ behavior: 'smooth' })
             return
         }
 
-        if (this.state.name === "" /*|| not all questions and boxes answered*/) {
-            return
+        for (const section in this.enabledSections) {
+            for (const question in quiz[Object.keys(quiz)[section]]) {
+                if (typeof this.answers[section][question] === "undefined") {
+                    this.sectionRefs[section].current.scrollIntoView({behavior: 'smooth'})
+                }
+            }
         }
 
         evt.preventDefault()
@@ -84,8 +93,8 @@ class Questionnaire extends React.Component {
         const formData = { name: this.state.name, email: this.state.email, date: start_date.toString(), answers: JSON.stringify(this.state.answers), evaluationID: this.state.evaluation.id };
         API.graphql({ query: createAnswer, variables: { input: formData }}).then((answer) => {
             console.log(answer)
-            this.setState({ submitted: true })
-            alert("Thank you! You have successfully submitted your answers.")
+            window.open("about:blank", "_self")
+            window.close()
         }).catch((error) => {
             console.log(error)
         })
@@ -93,7 +102,7 @@ class Questionnaire extends React.Component {
 
     startQuiz() {
         if (this.state.name !== "") {
-            this.firstSection.current.scrollIntoView({ behavior: 'smooth' })
+            this.sectionRefs[1].current.scrollIntoView({ behavior: 'smooth' })
         }
     }
 
@@ -128,7 +137,7 @@ class Questionnaire extends React.Component {
                 </Container>
                 {this.state.evaluation !== -1 &&
                 this.state.enabledSections.map((section, i) => (
-                    <div ref={i === 0 ? this.firstSection : null}>
+                    <div ref={this.sectionRefs[i+1]}>
                         <Section sections={section} title={Object.keys(quiz)[section]}
                                  questions={quiz[Object.keys(quiz)[section]]}
                                  updateAnswer={this.updateAnswer.bind(this)}/>
