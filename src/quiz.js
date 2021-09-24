@@ -47,3 +47,18 @@ export const quiz = {
         'I felt motivated when using voice to perform these tasks in the system.'
     ],
 }
+
+export function getAbsoluteNumber(section, question) {
+    let number = 0;
+    let absolute = 0;
+    Object.entries(quiz).forEach(([s, qs], i) => {
+        number += 1
+        qs.forEach((q, j) => {
+            number += 1
+            if (i === section && j === question) {
+                absolute = number
+            }
+        })
+    })
+    return absolute
+}

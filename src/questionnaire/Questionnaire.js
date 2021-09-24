@@ -8,10 +8,10 @@ import {
     TextField,
     Typography
 } from '@material-ui/core';
-import React from 'react';
+import React, {createRef} from 'react';
 import { API } from 'aws-amplify';
 import { getEvaluationForQuestionnaire } from "../graphql/customQueries";
-import {quiz} from "../quiz";
+import {getAbsoluteNumber, quiz} from "../quiz";
 import Section from "./Section";
 import {createAnswer} from "../graphql/mutations";
 import {usingWindowSize} from "./util/useWindowSize";
@@ -25,11 +25,17 @@ class Questionnaire extends React.Component {
             answers: {},
             name: "",
             email: null,
-            submitted: false,
+            owner: "",
             evaluationName: "",
-            owner: ""
+            submitted: false,
+            flashingQuestion: -1,
         };
-        this.firstSection = React.createRef()
+
+        let questionRefs = []
+        for (let i = 0; i < 31; i++) {
+            questionRefs.push(createRef())
+        }
+        this.questionRefs = questionRefs
     }
 
     componentDidMount() {
@@ -51,6 +57,7 @@ class Questionnaire extends React.Component {
                 evaluationName: evaluation.name,
                 owner: evaluation.owner
             })
+
             console.log(apiData.data.getEvaluation)
         }).catch((error) => {
             console.log(error)
@@ -67,15 +74,34 @@ class Questionnaire extends React.Component {
 
     updateName = (evt) => this.setState({ name: evt.target.value })
 
-    updateEmail= (evt) => this.setState({ email: evt.target.value })
+    updateEmail = (evt) => this.setState({ email: evt.target.value })
 
     sendAnswers(evt) {
-        if (this.state.submitted === true) {
-            alert("You cannot resubmit the same answers, please reload the page to retake the questionnaire.")
+        if (this.state.submitted) {
             return
         }
 
-        if (this.state.name === "" /*|| not all questions and boxes answered*/) {
+        if (this.state.name === "") {
+            alert("Please input a name.")
+            this.questionRefs[0].current.scrollIntoView({ behavior: 'smooth' })
+            return
+        }
+
+        let out = false;
+        this.state.enabledSections.every((section) => {
+            quiz[Object.keys(quiz)[section]].every((question, j) => {
+                if (typeof this.state.answers[section][j] === "undefined"
+                    || (this.state.answers[section][j].answer !== 0 && [null, ""].includes(this.state.answers[section][j].comment))) {
+                    this.getRef(section, j).current.scrollIntoView({behavior: 'smooth'})
+                    this.flash(getAbsoluteNumber(section, j)).then()
+                    out = true
+                    return false
+                }
+                return true
+            })
+            return !out
+        })
+        if (out) {
             return
         }
 
@@ -85,7 +111,6 @@ class Questionnaire extends React.Component {
         API.graphql({ query: createAnswer, variables: { input: formData }}).then((answer) => {
             console.log(answer)
             this.setState({ submitted: true })
-            alert("Thank you! You have successfully submitted your answers.")
         }).catch((error) => {
             console.log(error)
         })
@@ -93,7 +118,26 @@ class Questionnaire extends React.Component {
 
     startQuiz() {
         if (this.state.name !== "") {
-            this.firstSection.current.scrollIntoView({ behavior: 'smooth' })
+            this.questionRefs[1].current.scrollIntoView({ behavior: 'smooth' })
+        }
+    }
+
+    getRef(s, q) {
+        return this.questionRefs[getAbsoluteNumber(s, q)+2]
+    }
+
+    timeout(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async flash(q) {
+        const flashInterval = 80
+        await this.timeout(100)
+        for (let i = 0; i < 5; i++) {
+            this.setState({ flashingQuestion: q })
+            await this.timeout(flashInterval)
+            this.setState({ flashingQuestion: -1 })
+            await this.timeout(flashInterval)
         }
     }
 
@@ -101,12 +145,13 @@ class Questionnaire extends React.Component {
         const windowSize = this.props.windowSize
         return (
             <Box>
-                <Container sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
-                    <Typography variant="h5">{this.state.evaluationName} by {this.state.owner}</Typography>
+                <Container ref={this.questionRefs[0]} sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
                     <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px"}}>
                         <CardContent>
                             {this.state.evaluation !== -1 ?
                                 <div>
+                                    <Typography variant="h5">{this.state.evaluationName} by {this.state.owner}</Typography>
+                                    <br/><br/>
                                     <Typography variant="h1">Hi! Please tell us who you are</Typography><br/>
                                     <TextField sx={{p: 2}} fullWidth placeholder="Please enter your full name"
                                                onChange={this.updateName.bind(this)}/>
@@ -121,19 +166,23 @@ class Questionnaire extends React.Component {
                         {this.state.evaluation !== -1 &&
                         <CardActions>
                             <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
-                                    onClick={this.startQuiz.bind(this)}>Let's go!</Button>
+                                    onClick={this.startQuiz.bind(this)}
+                                    disabled={this.state.name === "" || this.state.evaluation === null}
+                            >Let's go!</Button>
                         </CardActions>
                         }
                     </Card>
                 </Container>
-                {this.state.evaluation !== -1 &&
-                this.state.enabledSections.map((section, i) => (
-                    <div ref={i === 0 ? this.firstSection : null}>
-                        <Section sections={section} title={Object.keys(quiz)[section]}
-                                 questions={quiz[Object.keys(quiz)[section]]}
-                                 updateAnswer={this.updateAnswer.bind(this)}/>
-                    </div>
-                ))
+                {this.state.evaluation &&
+                    this.state.enabledSections.map((section, i) => (
+                        <div ref={i === 0 ? this.questionRefs[1] : null}>
+                            <Section section={section}
+                                     updateAnswer={this.updateAnswer.bind(this)}
+                                     getRef={this.getRef.bind(this)}
+                                     flashingQuestion={this.state.flashingQuestion}
+                            />
+                        </div>
+                    ))
                 }
                 {this.state.evaluation !== -1 &&
                 <Container sx={{height: windowSize.height - 4, display: "flex", alignItems: "center"}}>
@@ -144,7 +193,10 @@ class Questionnaire extends React.Component {
                             {/*<TextField sx={{p: 2}} fullWidth placeholder="Your email" onChange={updateEmail}/>*/}
                         </CardContent>
                         <CardActions>
-                            <Button variant="contained" color="primary" size="large" style={{margin: "auto"}} onClick={this.sendAnswers.bind(this)}>Submit answers</Button>
+                            <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
+                                    onClick={this.sendAnswers.bind(this)}
+                                    disabled={this.state.submitted || this.state.evaluation === null}
+                            >{this.state.submitted ? "Submitted" : "Submit answers"}</Button>
                         </CardActions>
                     </Card>
                 </Container>
