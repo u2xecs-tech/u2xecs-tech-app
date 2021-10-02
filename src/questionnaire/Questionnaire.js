@@ -1,5 +1,4 @@
 import {
-    Box,
     Button,
     Card,
     CardActions,
@@ -15,6 +14,7 @@ import {getAbsoluteNumber, quiz} from "../quiz";
 import Section from "./Section";
 import {createAnswer} from "../graphql/mutations";
 import {usingWindowSize} from "./util/useWindowSize";
+import Sidebar from "./Sidebar";
 
 class Questionnaire extends React.Component {
     constructor(props) {
@@ -29,13 +29,20 @@ class Questionnaire extends React.Component {
             evaluationName: "",
             submitted: false,
             flashingQuestion: -1,
+            sidebarHidden: true,
         };
 
         let questionRefs = []
-        for (let i = 0; i < 31; i++) {
+        for (let i = 0; i < 29; i++) {
             questionRefs.push(createRef())
         }
         this.questionRefs = questionRefs
+
+        let sectionRefs = []
+        for (let i = 0; i < 10; i++) {
+            sectionRefs.push(createRef())
+        }
+        this.sectionRefs = sectionRefs
     }
 
     componentDidMount() {
@@ -83,7 +90,7 @@ class Questionnaire extends React.Component {
 
         if (this.state.name === "") {
             alert("Please input a name.")
-            this.questionRefs[0].current.scrollIntoView({ behavior: 'smooth' })
+            this.sectionRefs[0].current.scrollIntoView({ behavior: 'smooth' })
             return
         }
 
@@ -118,12 +125,13 @@ class Questionnaire extends React.Component {
 
     startQuiz() {
         if (this.state.name !== "") {
-            this.questionRefs[1].current.scrollIntoView({ behavior: 'smooth' })
+            this.sectionRefs[1].current.scrollIntoView({behavior: 'smooth'})
         }
+        this.setState({sidebarHidden: false})
     }
 
     getRef(s, q) {
-        return this.questionRefs[getAbsoluteNumber(s, q)+2]
+        return this.questionRefs[getAbsoluteNumber(s, q)]
     }
 
     timeout(ms) {
@@ -141,11 +149,18 @@ class Questionnaire extends React.Component {
         }
     }
 
+    goToSection(i) {
+        this.sectionRefs[i+1].current.scrollIntoView({ behavior: 'smooth' })
+    }
+
     render() {
         const windowSize = this.props.windowSize
         return (
-            <Box>
-                <Container ref={this.questionRefs[0]} sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
+            <div>
+                {!this.state.sidebarHidden && windowSize.width > 1250 &&
+                    <Sidebar sections={this.state.enabledSections} goToSection={this.goToSection.bind(this)}/>
+                }
+                <Container ref={this.sectionRefs[0]} sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
                     <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px"}}>
                         <CardContent>
                             {this.state.evaluation !== -1 ?
@@ -175,7 +190,7 @@ class Questionnaire extends React.Component {
                 </Container>
                 {this.state.evaluation &&
                     this.state.enabledSections.map((section, i) => (
-                        <div ref={i === 0 ? this.questionRefs[1] : null}>
+                        <div ref={this.sectionRefs[i+1]}>
                             <Section section={section}
                                      updateAnswer={this.updateAnswer.bind(this)}
                                      getRef={this.getRef.bind(this)}
@@ -201,7 +216,7 @@ class Questionnaire extends React.Component {
                     </Card>
                 </Container>
                 }
-            </Box>
+            </div>
         )
     }
 }
