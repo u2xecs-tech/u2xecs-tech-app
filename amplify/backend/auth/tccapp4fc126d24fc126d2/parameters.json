@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "tccapp2eebdd06_identitypool_2eebdd06",
+    "identityPoolName": "tccapp4fc126d2_identitypool_4fc126d2",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "tccapp2eebdd06",
-    "userPoolName": "tccapp2eebdd06_userpool_2eebdd06",
+    "resourceNameTruncated": "tccapp4fc126d2",
+    "userPoolName": "tccapp4fc126d2_userpool_4fc126d2",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -18,7 +18,8 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email"
+        "email",
+        "name"
     ],
     "aliasAttributes": [
         "email"
@@ -31,10 +32,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "tccapp2eebdd06_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "tccapp4fc126d2_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "2eebdd06",
-    "resourceName": "tccapp2eebdd06",
+    "sharedId": "4fc126d2",
+    "resourceName": "tccapp4fc126d24fc126d2",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -49,19 +50,18 @@
         ]
     },
     "useDefault": "manual",
-    "userPoolGroupList": [],
-    "serviceName": "Cognito",
-    "usernameCaseSensitive": false,
-    "dependsOn": [],
     "thirdPartyAuth": false,
     "userPoolGroups": false,
     "adminQueries": false,
     "triggers": "{}",
     "hostedUI": false,
+    "userPoolGroupList": [],
+    "serviceName": "Cognito",
+    "usernameCaseSensitive": false,
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "breakCircularDependency": true,
     "permissions": [],
-    "authProviders": []
+    "dependsOn": []
 }

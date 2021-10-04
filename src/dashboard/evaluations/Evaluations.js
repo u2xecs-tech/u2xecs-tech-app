@@ -14,19 +14,19 @@ class Evaluations extends React.Component {
         super(props);
         this.state = {
             filter: 0,
-            evaluations: []
+            evaluations: [],
+            creatorName: ""
         };
     }
 
     componentDidMount() {
         Auth.currentAuthenticatedUser().then((user) => {
             return new Promise((resolve, reject) => {
-                resolve(user.username)
+                resolve(user.attributes.name)
             })
-        }).then((username) => {
+        }).then((name) => {
             API.graphql({ query: listEvaluations }).then((apiData) => {
-                console.log(apiData.data.listEvaluations.items)
-                this.setState({evaluations: apiData.data.listEvaluations.items.filter((e) => {return e._deleted !== true})})
+                this.setState({evaluations: apiData.data.listEvaluations.items.filter((e) => {return e._deleted !== true}), creatorName: name})
             }).catch((error) => {
                 console.log(error)
             })
@@ -46,7 +46,7 @@ class Evaluations extends React.Component {
 
     addEvaluation = (name, description, disclaimer, enabled_sections) => {
         const start_date = Date.now()
-        const formData = { name: name, description: description, disclaimer: disclaimer, enabled_sections: enabled_sections, start_date: start_date.toString(), status: 0 };
+        const formData = { name: name, description: description, disclaimer: disclaimer, enabled_sections: enabled_sections, start_date: start_date.toString(), status: 0, creator: this.state.creatorName };
         return API.graphql({ query: createEvaluationMutation, variables: { input: formData }})
     }
 

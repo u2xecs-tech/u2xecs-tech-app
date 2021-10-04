@@ -13,6 +13,17 @@ import {
 } from '@material-ui/core';
 import RespondentAnswers from "./RespondentAnswers";
 
+String.prototype.hashCode = function() {
+    var hash = 0, i, chr;
+    if (this.length === 0) return hash;
+    for (i = 0; i < this.length; i++) {
+        chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash % 1000;
+};
+
 const Respondents = (props) => (
     <Card {...props}>
         <CardHeader title="Respondents"/>
@@ -38,7 +49,7 @@ const Respondents = (props) => (
                             <TableBody>
                                 {props.answers.map((a) => (
                                     <TableRow hover key={a.id}>
-                                        <TableCell>{a.name}</TableCell>
+                                        <TableCell>{a.name} - {a.id.hashCode()}</TableCell>
                                         <TableCell>
                                             {moment(a.createdAt).format('DD/MM/YYYY')}
                                         </TableCell>

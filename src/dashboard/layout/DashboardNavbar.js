@@ -13,7 +13,8 @@ const DashboardNavbar = () => {
 
     async function fetchUser() {
         await Auth.currentAuthenticatedUser().then((user) => {
-            setUser(user.username);
+            console.log(user);
+            setUser(user.attributes.name);
         });
     }
 

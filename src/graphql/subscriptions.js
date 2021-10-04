@@ -10,9 +10,6 @@ export const onCreateAnswer = /* GraphQL */ `
       email
       answers
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -24,19 +21,15 @@ export const onCreateAnswer = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
     }
@@ -51,9 +44,6 @@ export const onUpdateAnswer = /* GraphQL */ `
       email
       answers
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -65,19 +55,15 @@ export const onUpdateAnswer = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
     }
@@ -92,9 +78,6 @@ export const onDeleteAnswer = /* GraphQL */ `
       email
       answers
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -106,19 +89,15 @@ export const onDeleteAnswer = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
     }
@@ -135,6 +114,7 @@ export const onCreateEvaluation = /* GraphQL */ `
       enabled_sections
       description
       status
+      creator
       answers {
         items {
           id
@@ -143,18 +123,11 @@ export const onCreateEvaluation = /* GraphQL */ `
           email
           answers
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -164,15 +137,11 @@ export const onCreateEvaluation = /* GraphQL */ `
           evaluationID
           content
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -188,6 +157,7 @@ export const onUpdateEvaluation = /* GraphQL */ `
       enabled_sections
       description
       status
+      creator
       answers {
         items {
           id
@@ -196,18 +166,11 @@ export const onUpdateEvaluation = /* GraphQL */ `
           email
           answers
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -217,15 +180,11 @@ export const onUpdateEvaluation = /* GraphQL */ `
           evaluationID
           content
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -241,6 +200,7 @@ export const onDeleteEvaluation = /* GraphQL */ `
       enabled_sections
       description
       status
+      creator
       answers {
         items {
           id
@@ -249,18 +209,11 @@ export const onDeleteEvaluation = /* GraphQL */ `
           email
           answers
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -270,15 +223,11 @@ export const onDeleteEvaluation = /* GraphQL */ `
           evaluationID
           content
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -290,9 +239,6 @@ export const onCreateComment = /* GraphQL */ `
       evaluationID
       content
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -304,19 +250,15 @@ export const onCreateComment = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner
@@ -330,9 +272,6 @@ export const onUpdateComment = /* GraphQL */ `
       evaluationID
       content
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -344,19 +283,15 @@ export const onUpdateComment = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner
@@ -370,9 +305,6 @@ export const onDeleteComment = /* GraphQL */ `
       evaluationID
       content
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -384,19 +316,15 @@ export const onDeleteComment = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner

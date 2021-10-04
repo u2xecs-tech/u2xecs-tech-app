@@ -3,7 +3,7 @@ type Evaluation
   @auth(
     rules: [
       { allow: owner, provider: userPools },
-      { allow: public, provider: iam}
+      { allow: public, provider: iam }
     ]
   ) {
   id: ID!
@@ -14,6 +14,7 @@ type Evaluation
   enabled_sections: String!
   description: String
   status: Int!
+  creator: String!
   comments: [Comment] @connection(keyName: "byEvaluation", fields: ["id"])
   answers: [Answer] @connection(keyName: "byEvaluation", fields: ["id"])
 }

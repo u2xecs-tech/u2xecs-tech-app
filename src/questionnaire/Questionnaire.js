@@ -9,8 +9,8 @@ import {
     Typography
 } from '@material-ui/core';
 import React from 'react';
-import { API } from 'aws-amplify';
-import { getEvaluationForQuestionnaire } from "../graphql/customQueries";
+import {API} from 'aws-amplify';
+import {getEvaluationForQuestionnaire} from "../graphql/customQueries";
 import {quiz} from "../quiz";
 import Section from "./Section";
 import {createAnswer} from "../graphql/mutations";
@@ -35,7 +35,7 @@ class Questionnaire extends React.Component {
     componentDidMount() {
         API.graphql({
             query: getEvaluationForQuestionnaire,
-            variables: { id: this.props.link },
+            variables: {id: this.props.link},
             authMode: 'AWS_IAM'
         }).then((apiData) => {
             const evaluation = apiData.data.getEvaluation
@@ -49,7 +49,7 @@ class Questionnaire extends React.Component {
                 enabledSections: enabledSections,
                 answers: answers,
                 evaluationName: evaluation.name,
-                owner: evaluation.owner
+                owner: evaluation.creator
             })
             console.log(apiData.data.getEvaluation)
         }).catch((error) => {
@@ -65,9 +65,9 @@ class Questionnaire extends React.Component {
         })
     }
 
-    updateName = (evt) => this.setState({ name: evt.target.value })
+    updateName = (evt) => this.setState({name: evt.target.value})
 
-    updateEmail= (evt) => this.setState({ email: evt.target.value })
+    updateEmail = (evt) => this.setState({email: evt.target.value})
 
     sendAnswers(evt) {
         if (this.state.submitted === true) {
@@ -80,12 +80,28 @@ class Questionnaire extends React.Component {
         }
 
         evt.preventDefault()
-        const start_date = Date.now()
-        const formData = { name: this.state.name, email: this.state.email, date: start_date.toString(), answers: JSON.stringify(this.state.answers), evaluationID: this.state.evaluation.id };
-        API.graphql({ query: createAnswer, variables: { input: formData }}).then((answer) => {
-            console.log(answer)
-            this.setState({ submitted: true })
-            alert("Thank you! You have successfully submitted your answers.")
+        API.graphql({
+            query: getEvaluationForQuestionnaire,
+            variables: {id: this.props.link},
+            authMode: 'AWS_IAM'
+        }).then((apiData) => {
+            const evaluation = apiData.data.getEvaluation
+
+            const start_date = Date.now()
+            const formData = {
+                name: this.state.name,
+                email: this.state.email,
+                date: start_date.toString(),
+                answers: JSON.stringify(this.state.answers),
+                evaluationID: this.state.evaluation.id
+            };
+            API.graphql({query: createAnswer, variables: {input: formData}}).then((answer) => {
+                console.log(answer)
+                this.setState({submitted: true})
+                alert("Thank you! You have successfully submitted your answers.")
+            }).catch((error) => {
+                console.log(error)
+            })
         }).catch((error) => {
             console.log(error)
         })
@@ -93,7 +109,7 @@ class Questionnaire extends React.Component {
 
     startQuiz() {
         if (this.state.name !== "") {
-            this.firstSection.current.scrollIntoView({ behavior: 'smooth' })
+            this.firstSection.current.scrollIntoView({behavior: 'smooth'})
         }
     }
 
@@ -101,9 +117,21 @@ class Questionnaire extends React.Component {
         const windowSize = this.props.windowSize
         return (
             <Box>
-                <Container sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
+                <Container sx={{
+                    height: windowSize.height - 124,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column"
+                }}>
                     <Typography variant="h5">{this.state.evaluationName} by {this.state.owner}</Typography>
-                    <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px"}}>
+                    <Card style={{
+                        textAlignVertical: "center",
+                        textAlign: "center",
+                        width: "520px",
+                        margin: "50px auto",
+                        padding: "20px"
+                    }}>
                         <CardContent>
                             {this.state.evaluation !== -1 ?
                                 <div>
@@ -113,8 +141,10 @@ class Questionnaire extends React.Component {
                                 </div>
                                 :
                                 <div>
-                                    <Typography variant="h1">Sorry! Looks like this evaluation has been closed.</Typography><br/><br/>
-                                    <Typography variant="p">Believe this is an error? Contact the evaluation's owner!</Typography>
+                                    <Typography variant="h1">Sorry! Looks like this evaluation has been
+                                        closed.</Typography><br/><br/>
+                                    <Typography variant="p">Believe this is an error? Contact the evaluation's
+                                        owner!</Typography>
                                 </div>
                             }
                         </CardContent>
@@ -137,14 +167,21 @@ class Questionnaire extends React.Component {
                 }
                 {this.state.evaluation !== -1 &&
                 <Container sx={{height: windowSize.height - 4, display: "flex", alignItems: "center"}}>
-                    <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px",}}>
+                    <Card style={{
+                        textAlignVertical: "center",
+                        textAlign: "center",
+                        width: "520px",
+                        margin: "50px auto",
+                        padding: "20px",
+                    }}>
                         <CardContent>
                             <Typography variant="h1">You're done!<br/>Thank you for answering</Typography><br/>
                             {/*<label>If you'd like to receive a copy of your answers, please enter your email below:</label><br/><br/>*/}
                             {/*<TextField sx={{p: 2}} fullWidth placeholder="Your email" onChange={updateEmail}/>*/}
                         </CardContent>
                         <CardActions>
-                            <Button variant="contained" color="primary" size="large" style={{margin: "auto"}} onClick={this.sendAnswers.bind(this)}>Submit answers</Button>
+                            <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
+                                    onClick={this.sendAnswers.bind(this)}>Submit answers</Button>
                         </CardActions>
                     </Card>
                 </Container>

@@ -118,22 +118,6 @@ Parameters:
     Type: String
   
             
-        
-  userPoolGroupList:
-    Type: CommaDelimitedList
-      
-  serviceName:
-    Type: String
-  
-            
-  
-  usernameCaseSensitive:
-    Type: String
-            
-        
-  dependsOn:
-    Type: CommaDelimitedList
-      
   
   thirdPartyAuth:
     Type: String
@@ -154,6 +138,18 @@ Parameters:
   hostedUI:
     Type: String
             
+        
+  userPoolGroupList:
+    Type: CommaDelimitedList
+      
+            
+  serviceName:
+    Type: String
+  
+            
+  
+  usernameCaseSensitive:
+    Type: String
             
       
   parentStack:
@@ -168,7 +164,7 @@ Parameters:
     Type: CommaDelimitedList
       
         
-  authProviders:
+  dependsOn:
     Type: CommaDelimitedList
       
 Conditions:
@@ -185,7 +181,7 @@ Resources:
   # Created to allow the UserPool SMS Config to publish via the Simple Notification Service during MFA Process
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'tccapp2eebdd06_sns-role', !Join ['',[ 'sns', '2eebdd06', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'tccapp4fc126d2_sns-role', !Join ['',[ 'sns', '4fc126d2', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -197,10 +193,10 @@ Resources:
               - "sts:AssumeRole"
             Condition:
               StringEquals:
-                sts:ExternalId: tccapp2eebdd06_role_external_id
+                sts:ExternalId: tccapp4fc126d2_role_external_id
       Policies:
         -
-          PolicyName: tccapp2eebdd06-sns-policy
+          PolicyName: tccapp4fc126d2-sns-policy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -226,6 +222,11 @@ Resources:
         
         -
           Name: email
+          Required: true
+          Mutable: true
+        
+        -
+          Name: name
           Required: true
           Mutable: true
         
@@ -257,7 +258,7 @@ Resources:
       SmsAuthenticationMessage: !Ref smsAuthenticationMessage
       SmsConfiguration:
         SnsCallerArn: !GetAtt SNSRole.Arn
-        ExternalId: tccapp2eebdd06_role_external_id
+        ExternalId: tccapp4fc126d2_role_external_id
     
   
   UserPoolClientWeb:
@@ -265,7 +266,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: tccapp2eebdd06_app_clientWeb
+      ClientName: tccapp4fc126d2_app_clientWeb
       
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
@@ -275,7 +276,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: tccapp2eebdd06_app_client
+      ClientName: tccapp4fc126d2_app_client
       
       GenerateSecret: !Ref userpoolClientGenerateSecret
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
@@ -286,7 +287,7 @@ Resources:
   # Created to execute Lambda which gets userpool app client config values
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', '2eebdd06', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', '4fc126d2', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -340,7 +341,7 @@ Resources:
   # Marked as depending on UserPoolClientRole for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: tccapp2eebdd06_userpoolclient_lambda_iam_policy
+      PolicyName: tccapp4fc126d2_userpoolclient_lambda_iam_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -357,7 +358,7 @@ Resources:
   # Marked as depending on UserPoolClientLambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: tccapp2eebdd06_userpoolclient_lambda_log_policy
+      PolicyName: tccapp4fc126d2_userpoolclient_lambda_log_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -397,7 +398,7 @@ Resources:
   # Always created
     Type: AWS::Cognito::IdentityPool
     Properties:
-      IdentityPoolName: !If [ShouldNotCreateEnvResources, 'tccapp2eebdd06_identitypool_2eebdd06', !Join ['',['tccapp2eebdd06_identitypool_2eebdd06', '__', !Ref env]]]
+      IdentityPoolName: !If [ShouldNotCreateEnvResources, 'tccapp4fc126d2_identitypool_4fc126d2', !Join ['',['tccapp4fc126d2_identitypool_4fc126d2', '__', !Ref env]]]
       
       CognitoIdentityProviders:
         - ClientId:  !Ref UserPoolClient

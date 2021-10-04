@@ -13,9 +13,6 @@ export const createAnswer = /* GraphQL */ `
       email
       answers
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -27,19 +24,15 @@ export const createAnswer = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
     }
@@ -57,9 +50,6 @@ export const updateAnswer = /* GraphQL */ `
       email
       answers
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -71,19 +61,15 @@ export const updateAnswer = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
     }
@@ -101,9 +87,6 @@ export const deleteAnswer = /* GraphQL */ `
       email
       answers
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -115,19 +98,15 @@ export const deleteAnswer = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
     }
@@ -147,6 +126,7 @@ export const createEvaluation = /* GraphQL */ `
       enabled_sections
       description
       status
+      creator
       answers {
         items {
           id
@@ -155,18 +135,11 @@ export const createEvaluation = /* GraphQL */ `
           email
           answers
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -176,15 +149,11 @@ export const createEvaluation = /* GraphQL */ `
           evaluationID
           content
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -203,6 +172,7 @@ export const updateEvaluation = /* GraphQL */ `
       enabled_sections
       description
       status
+      creator
       answers {
         items {
           id
@@ -211,18 +181,11 @@ export const updateEvaluation = /* GraphQL */ `
           email
           answers
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -232,15 +195,11 @@ export const updateEvaluation = /* GraphQL */ `
           evaluationID
           content
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -259,6 +218,7 @@ export const deleteEvaluation = /* GraphQL */ `
       enabled_sections
       description
       status
+      creator
       answers {
         items {
           id
@@ -267,18 +227,11 @@ export const deleteEvaluation = /* GraphQL */ `
           email
           answers
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -288,15 +241,11 @@ export const deleteEvaluation = /* GraphQL */ `
           evaluationID
           content
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -311,9 +260,6 @@ export const createComment = /* GraphQL */ `
       evaluationID
       content
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -325,19 +271,15 @@ export const createComment = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner
@@ -354,9 +296,6 @@ export const updateComment = /* GraphQL */ `
       evaluationID
       content
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -368,19 +307,15 @@ export const updateComment = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner
@@ -397,9 +332,6 @@ export const deleteComment = /* GraphQL */ `
       evaluationID
       content
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -411,19 +343,15 @@ export const deleteComment = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner

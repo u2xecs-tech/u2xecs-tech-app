@@ -1,53 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const syncAnswers = /* GraphQL */ `
-  query SyncAnswers(
-    $filter: ModelAnswerFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncAnswers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        evaluationID
-        name
-        email
-        answers
-        date
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        evaluation {
-          id
-          name
-          start_date
-          end_date
-          disclaimer
-          enabled_sections
-          description
-          status
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-          owner
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getAnswer = /* GraphQL */ `
   query GetAnswer($id: ID!) {
     getAnswer(id: $id) {
@@ -57,9 +10,6 @@ export const getAnswer = /* GraphQL */ `
       email
       answers
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -71,19 +21,15 @@ export const getAnswer = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
     }
@@ -103,9 +49,6 @@ export const listAnswers = /* GraphQL */ `
         email
         answers
         date
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         evaluation {
@@ -117,16 +60,13 @@ export const listAnswers = /* GraphQL */ `
           enabled_sections
           description
           status
-          _version
-          _deleted
-          _lastChangedAt
+          creator
           createdAt
           updatedAt
           owner
         }
       }
       nextToken
-      startedAt
     }
   }
 `;
@@ -141,6 +81,7 @@ export const getEvaluation = /* GraphQL */ `
       enabled_sections
       description
       status
+      creator
       answers {
         items {
           id
@@ -149,18 +90,11 @@ export const getEvaluation = /* GraphQL */ `
           email
           answers
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
-        startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       owner
@@ -170,15 +104,11 @@ export const getEvaluation = /* GraphQL */ `
           evaluationID
           content
           date
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           owner
         }
         nextToken
-        startedAt
       }
     }
   }
@@ -199,65 +129,18 @@ export const listEvaluations = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncEvaluations = /* GraphQL */ `
-  query SyncEvaluations(
-    $filter: ModelEvaluationFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncEvaluations(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        status
-        answers {
-          nextToken
-          startedAt
-        }
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        owner
-        comments {
-          nextToken
-          startedAt
-        }
-      }
-      nextToken
-      startedAt
     }
   }
 `;
@@ -268,9 +151,6 @@ export const getComment = /* GraphQL */ `
       evaluationID
       content
       date
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
       evaluation {
@@ -282,19 +162,15 @@ export const getComment = /* GraphQL */ `
         enabled_sections
         description
         status
+        creator
         answers {
           nextToken
-          startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         owner
         comments {
           nextToken
-          startedAt
         }
       }
       owner
@@ -313,9 +189,6 @@ export const listComments = /* GraphQL */ `
         evaluationID
         content
         date
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         evaluation {
@@ -327,9 +200,7 @@ export const listComments = /* GraphQL */ `
           enabled_sections
           description
           status
-          _version
-          _deleted
-          _lastChangedAt
+          creator
           createdAt
           updatedAt
           owner
@@ -337,53 +208,6 @@ export const listComments = /* GraphQL */ `
         owner
       }
       nextToken
-      startedAt
-    }
-  }
-`;
-export const syncComments = /* GraphQL */ `
-  query SyncComments(
-    $filter: ModelCommentFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncComments(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        evaluationID
-        content
-        date
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        evaluation {
-          id
-          name
-          start_date
-          end_date
-          disclaimer
-          enabled_sections
-          description
-          status
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-          owner
-        }
-        owner
-      }
-      nextToken
-      startedAt
     }
   }
 `;

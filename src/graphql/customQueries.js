@@ -9,7 +9,7 @@ export const getEvaluationForQuestionnaire = /* GraphQL */ `
             enabled_sections
             description
             status
-            owner
+            creator
         }
     }
 `;

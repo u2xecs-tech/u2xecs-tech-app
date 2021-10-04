@@ -1,7 +1,9 @@
 import {Outlet} from 'react-router-dom';
 import {experimentalStyled} from '@material-ui/core';
 import DashboardNavbar from './DashboardNavbar';
-import { withAuthenticator } from '@aws-amplify/ui-react';
+import {AmplifyAuthenticator, AmplifySignUp} from '@aws-amplify/ui-react';
+import {AuthState, onAuthUIStateChange} from '@aws-amplify/ui-components';
+import React from "react";
 
 const DashboardLayoutRoot = experimentalStyled('div')(
     ({theme}) => ({
@@ -35,7 +37,17 @@ const DashboardLayoutContent = experimentalStyled('div')({
 });
 
 const DashboardLayout = () => {
-    return (
+    const [authState, setAuthState] = React.useState();
+    const [user, setUser] = React.useState();
+
+    React.useEffect(() => {
+        return onAuthUIStateChange((nextAuthState, authData) => {
+            setAuthState(nextAuthState);
+            setUser(authData)
+        })
+    })
+
+    return authState === AuthState.SignedIn && user ? (
         <DashboardLayoutRoot>
             <DashboardNavbar/>
             <DashboardLayoutWrapper>
@@ -46,7 +58,19 @@ const DashboardLayout = () => {
                 </DashboardLayoutContainer>
             </DashboardLayoutWrapper>
         </DashboardLayoutRoot>
+    ) : (
+        <AmplifyAuthenticator usernameAlias="email">
+            <AmplifySignUp
+                slot="sign-up"
+                formFields={[
+                    { type: "username" },
+                    { label: "Name *", type: "name", required: true, placeholder: "Enter your name" },
+                    { type: "email" },
+                    { type: "password" }
+                ]}
+            />
+        </AmplifyAuthenticator>
     );
 };
 
-export default withAuthenticator(DashboardLayout);
+export default DashboardLayout;
