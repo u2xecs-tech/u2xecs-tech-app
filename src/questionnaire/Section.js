@@ -2,13 +2,18 @@ import {Box, Button, TextField, Typography} from "@material-ui/core";
 import React from "react";
 import labels from '../theme/labels';
 import colors from "../theme/colors";
+import {getAbsoluteNumber, quiz} from "../quiz";
 
 class Section extends React.Component {
     constructor(props) {
         super(props);
-        let answers = Array(props.questions.length).fill(null)
+        this.section = props.section
+        this.getRef = props.getRef
+        this.questions = quiz[Object.keys(quiz)[props.section]]
+        this.title = Object.keys(quiz)[this.section]
+
         this.state = {
-            answers: answers.map(() => {
+            answers: Array(this.questions.length).fill(null).map(() => {
                 return {
                     answer: null,
                     comment: null
@@ -23,7 +28,7 @@ class Section extends React.Component {
         const newAnswers = this.state.answers
         newAnswers[question].answer = parseInt(answer)
         this.setState({ answers: newAnswers })
-        this.props.updateAnswer(this.props.sections, question, newAnswers[question])
+        this.props.updateAnswer(this.props.section, question, newAnswers[question])
     }
 
     setComment(evt) {
@@ -31,7 +36,7 @@ class Section extends React.Component {
         const newAnswers = this.state.answers
         newAnswers[question].comment = evt.target.value
         this.setState({ answers: newAnswers })
-        this.props.updateAnswer(this.props.sections, question, newAnswers[question])
+        this.props.updateAnswer(this.props.section, question, newAnswers[question])
         console.log(newAnswers)
     }
 
@@ -42,6 +47,13 @@ class Section extends React.Component {
         return this.state.answers[idx].answer === i ? 1 : 0.4
     }
 
+    isRed(idx) {
+        if (this.props.flashingQuestion !== -1) {
+            console.log(getAbsoluteNumber(this.props.section, idx), this.props.flashingQuestion)
+        }
+        return getAbsoluteNumber(this.props.section, idx) === this.props.flashingQuestion
+    }
+
     render() {
         return (
             <Box sx={{
@@ -50,17 +62,19 @@ class Section extends React.Component {
                 alignItems: "center",
                 py: 8,
             }}>
-                <Typography variant="h1">{this.props.title}</Typography>
+                <Typography variant="h1">{this.title}</Typography>
                 {
-                    this.props.questions.map((question, idx) => (
-                        <Box key={question} sx={{
+                    this.questions.map((question, idx) => (
+                        <Box ref={this.getRef(this.props.section, idx)} key={getAbsoluteNumber(this.props.section, idx)} sx={{
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "flex-start",
-                            my: 4,
+                            py: 4,
                             maxWidth: 880,
                         }}>
-                            <Typography variant="h4" sx={{m: 1}}>{idx + 1}. {question}</Typography>
+                            <Typography variant="h4" sx={{m: 1, color: this.isRed(idx) ? "red" : "black"}}>
+                                {idx + 1}. {question}
+                            </Typography>
                             <Box>
                                 {labels.map((label, i) => (
                                     <Button variant="contained"
@@ -81,7 +95,7 @@ class Section extends React.Component {
                                 ))}
                             </Box>
                             {this.state.answers[idx].answer !== 0 && this.state.answers[idx].answer !== null &&
-                                <Typography variant="p" sx={{mt: 2, mx: 1}}>Based on the statement above and your answer, describe the {this.props.title} issues you identified in the system.</Typography>
+                                <Typography variant="p" sx={{mt: 2, mx: 1}}>Based on the statement above and your answer, describe the {this.title} issues you identified in the system.</Typography>
                             }
                             {this.state.answers[idx].answer !== 0 && this.state.answers[idx].answer !== null &&
                                 <TextField inputProps={{question: idx}} multiline onChange={this.setComment.bind(this)} sx={{width: "98%", m: 1}}/>

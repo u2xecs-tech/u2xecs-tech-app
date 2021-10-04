@@ -4,11 +4,13 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Box, Checkbox, colors, Divider, FormControlLabel, MenuItem, Select, Typography} from "@material-ui/core";
+import {Box, Checkbox, colors, FormControlLabel, MenuItem, Select, Typography} from "@material-ui/core";
 import {PDFDownloadLink} from "@react-pdf/renderer";
 import Report from "./Report"
 import {Bar, Chart, Doughnut} from "react-chartjs-2";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import {CSVLink} from "react-csv";
+import {quiz} from "../../quiz";
 
 export default function ReportGenerator(props) {
     const [chartType, setChartType] = useState(0);
@@ -137,6 +139,43 @@ export default function ReportGenerator(props) {
         },
     }
 
+    function csvData() {
+        const data = []
+        const first = [e.name, '']
+        const second = ['', '']
+        Object.entries(e.answers.items[0].answers).forEach(([section, answers]) => {
+            const name = Object.keys(quiz)[section]
+            quiz[name].forEach((question, i) => {
+                first.push(name)
+                second.push(`${i+1}. ${question}`)
+                if (comments) {
+                    first.push(name)
+                    second.push(`${i+1}- Comments`)
+                }
+            })
+        })
+        data.push(first)
+        data.push(second)
+
+        const labels = [`I totally agree`, `I partially agree`, `I neither agree nor disagree`, `I partially disagree`, `I totally disagree`]
+        e.answers.items.forEach((answer) => {
+            const line = [answer.id, answer.name]
+            Object.values(answer.answers).flat().forEach((a) => {
+                line.push(labels[a.answer])
+                if (comments) {
+                    line.push(a.comment)
+                }
+            })
+            data.push(line)
+        })
+
+        return data
+        // this.setState({ dataToDownload: data }, () => {
+        //     // click the CSVLink component to trigger the CSV download
+        //     this.csvLink.link.click()
+        // })
+    }
+
     return (
         <div>
             <Button sx={{mx: 1}} color="primary" variant="contained" onClick={handleClickOpen('paper')}
@@ -176,7 +215,7 @@ export default function ReportGenerator(props) {
                         </Typography>
                         <Select value={file} variant='standard' onChange={(e) => {setFileType(e.target.value)}}>
                             <MenuItem value={0}>PDF</MenuItem>
-                            {/*<MenuItem value={1}>CSV</MenuItem>*/}
+                            <MenuItem value={1}>CSV</MenuItem>
                         </Select>
                         {file === 0 &&
                             <>
@@ -201,46 +240,46 @@ export default function ReportGenerator(props) {
                         label="Include respondent comments"
                         sx={{mb: 4}}
                     />
-                    {file === 0 &&
-                        <div>
-                            <Divider/>
-                            <PerfectScrollbar>
-                                <br/>
-                                <Box sx={{maxHeight: 300}}>
-                                    <Typography variant='body2'>
-                                        Charts to include:
-                                    </Typography>
-                                    {e.answers.items.length !== 0 &&
-                                        Object.entries(e.answers.items[0].answers).map(([section, answers]) => (
+                    <PerfectScrollbar>
+                        <br/>
+                        <Box sx={{maxHeight: 2, overflow: 'hidden'}}>
+                            {e.answers.items.length !== 0 &&
+                                Object.entries(e.answers.items[0].answers).map(([section, answers]) => (
+                                    <div>
+                                        {answers.map((a, i) => (
                                             <div>
-                                                {answers.map((a, i) => (
-                                                    <div>
-                                                        {chartType === 0
-                                                            ? <Doughnut id={`chart${section}-${i}`} data={data(section, i)} options={options} width={520} height={200}/>
-                                                            : <Bar id={`chart${section}-${i}`} data={data(section, i)} options={options} width={520} height={200}/>
-                                                        }
-                                                    </div>
-                                                ))}
+                                                {chartType === 0
+                                                    ? <Doughnut id={`chart${section}-${i}`} data={data(section, i)} options={options} width={520} height={200}/>
+                                                    : <Bar id={`chart${section}-${i}`} data={data(section, i)} options={options} width={520} height={200}/>
+                                                }
                                             </div>
-                                        ))
-                                    }
-                                </Box>
-                            </PerfectScrollbar>
-                        </div>
-                    }
+                                        ))}
+                                    </div>
+                                ))
+                            }
+                        </Box>
+                    </PerfectScrollbar>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="error">
                         Cancel
                     </Button>
-                    {file === 0 && downloadReady ?
-                        <Button>
-                            <PDFDownloadLink document={<Report evaluation={e} comments={comments} charts={getCharts()}/>} fileName={`${e.name}.pdf`}>
-                                {({ blob, url, loading, error }) =>
-                                    loading ? 'Generating.....' : 'Download'
-                                }
-                            </PDFDownloadLink>
-                        </Button>
+                    {downloadReady ?
+                        <div>
+                            {file === 0 ?
+                                <Button>
+                                    <PDFDownloadLink document={<Report evaluation={e} comments={comments} charts={getCharts()}/>} fileName={`${e.name}.pdf`}>
+                                        {({ blob, url, loading, error }) =>
+                                            loading ? 'Generating.....' : 'Download'
+                                        }
+                                    </PDFDownloadLink>
+                                </Button>
+                                :
+                                <Button>
+                                    <CSVLink data={csvData()} filename={`${e.name}`}>Download</CSVLink>
+                                </Button>
+                            }
+                        </div>
                         :
                         <Button>
                             Generating.....
