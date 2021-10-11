@@ -8,13 +8,14 @@ import {
     Typography
 } from '@material-ui/core';
 import React, {createRef} from 'react';
-import { API } from 'aws-amplify';
-import { getEvaluationForQuestionnaire } from "../graphql/customQueries";
+import {API} from 'aws-amplify';
+import {getEvaluationForQuestionnaire} from "../graphql/customQueries";
 import {getAbsoluteNumber, quiz} from "../quiz";
 import Section from "./Section";
 import {createAnswer} from "../graphql/mutations";
 import {usingWindowSize} from "./util/useWindowSize";
 import Sidebar from "./Sidebar";
+import LoadingOverlay from "react-loading-overlay";
 
 class Questionnaire extends React.Component {
     constructor(props) {
@@ -63,9 +64,9 @@ class Questionnaire extends React.Component {
                 enabledSections: enabledSections,
                 answers: answers,
                 evaluationName: evaluation.name,
-                owner: evaluation.creator
+                owner: evaluation.creator,
+                isLoading: false
             })
-            this.props.didLoad();
 
             console.log(apiData.data.getEvaluation)
         }).catch((error) => {
@@ -83,7 +84,7 @@ class Questionnaire extends React.Component {
 
     updateName = (evt) => this.setState({name: evt.target.value})
 
-    updateEmail = (evt) => this.setState({ email: evt.target.value })
+    updateEmail = (evt) => this.setState({email: evt.target.value})
 
     sendAnswers(evt) {
         if (this.state.submitted) {
@@ -92,7 +93,7 @@ class Questionnaire extends React.Component {
 
         if (this.state.name === "") {
             alert("Please input a name.")
-            this.sectionRefs[0].current.scrollIntoView({ behavior: 'smooth' })
+            this.sectionRefs[0].current.scrollIntoView({behavior: 'smooth'})
             return
         }
 
@@ -115,6 +116,7 @@ class Questionnaire extends React.Component {
         }
 
         evt.preventDefault()
+        this.setState({isLoading: true});
         API.graphql({
             query: getEvaluationForQuestionnaire,
             variables: {id: this.props.link},
@@ -132,7 +134,7 @@ class Questionnaire extends React.Component {
             };
             API.graphql({query: createAnswer, variables: {input: formData}}).then((answer) => {
                 console.log(answer)
-                this.setState({submitted: true})
+                this.setState({submitted: true, isLoading: false})
                 alert("Thank you! You have successfully submitted your answers.")
             }).catch((error) => {
                 console.log(error)
@@ -161,15 +163,15 @@ class Questionnaire extends React.Component {
         const flashInterval = 80
         await this.timeout(100)
         for (let i = 0; i < 5; i++) {
-            this.setState({ flashingQuestion: q })
+            this.setState({flashingQuestion: q})
             await this.timeout(flashInterval)
-            this.setState({ flashingQuestion: -1 })
+            this.setState({flashingQuestion: -1})
             await this.timeout(flashInterval)
         }
     }
 
     goToSection(i) {
-        this.sectionRefs[i+1].current.scrollIntoView({ behavior: 'smooth' })
+        this.sectionRefs[i + 1].current.scrollIntoView({behavior: 'smooth'})
     }
 
     render() {
@@ -177,41 +179,64 @@ class Questionnaire extends React.Component {
         return (
             <div>
                 {!this.state.sidebarHidden && windowSize.width > 1250 &&
-                    <Sidebar sections={this.state.enabledSections} goToSection={this.goToSection.bind(this)}/>
+                <Sidebar sections={this.state.enabledSections} goToSection={this.goToSection.bind(this)}/>
                 }
-                <Container ref={this.sectionRefs[0]} sx={{height: windowSize.height - 124, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
-                    <Card style={{textAlignVertical: "center", textAlign: "center", width: "520px", margin: "50px auto", padding: "20px"}}>
-                        <CardContent>
-                            {this.state.evaluation !== -1 ?
-                                <div>
-                                    <Typography variant="h5">{this.state.evaluationName} by {this.state.owner}</Typography>
-                                    <br/><br/>
-                                    <Typography variant="h1">Hi! Please tell us who you are</Typography><br/>
-                                    <TextField sx={{p: 2}} fullWidth placeholder="Please enter your full name"
-                                               onChange={this.updateName.bind(this)}/>
-                                </div>
-                                :
-                                <div>
-                                    <Typography variant="h1">Sorry! Looks like this evaluation has been
-                                        closed.</Typography><br/><br/>
-                                    <Typography variant="p">Believe this is an error? Contact the evaluation's
-                                        owner!</Typography>
-                                </div>
+                <LoadingOverlay active={this.state.isLoading} spinner styles={{
+                    content: {
+                        width: window.innerWidth,
+                        height: window.innerHeight
+                    },
+                    spinner: (base) => ({
+                        ...base,
+                        height: "100%"
+                    })
+                }}>
+                    <Container ref={this.sectionRefs[0]} sx={{
+                        height: windowSize.height - 124,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column"
+                    }}>
+                        <Card style={{
+                            textAlignVertical: "center",
+                            textAlign: "center",
+                            width: "520px",
+                            margin: "50px auto",
+                            padding: "20px"
+                        }}>
+                            <CardContent>
+                                {this.state.evaluation !== -1 ?
+                                    <div>
+                                        <Typography
+                                            variant="h5">{this.state.evaluationName} by {this.state.owner}</Typography>
+                                        <br/><br/>
+                                        <Typography variant="h1">Hi! Please tell us who you are</Typography><br/>
+                                        <TextField sx={{p: 2}} fullWidth placeholder="Please enter your full name"
+                                                   onChange={this.updateName.bind(this)}/>
+                                    </div>
+                                    :
+                                    <div>
+                                        <Typography variant="h1">Sorry! Looks like this evaluation has been
+                                            closed.</Typography><br/><br/>
+                                        <Typography variant="p">Believe this is an error? Contact the evaluation's
+                                            owner!</Typography>
+                                    </div>
+                                }
+                            </CardContent>
+                            {this.state.evaluation !== -1 &&
+                            <CardActions>
+                                <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
+                                        onClick={this.startQuiz.bind(this)}
+                                        disabled={this.state.name === "" || this.state.evaluation === null}
+                                >Let's go!</Button>
+                            </CardActions>
                             }
-                        </CardContent>
-                        {this.state.evaluation !== -1 &&
-                        <CardActions>
-                            <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
-                                    onClick={this.startQuiz.bind(this)}
-                                    disabled={this.state.name === "" || this.state.evaluation === null}
-                            >Let's go!</Button>
-                        </CardActions>
-                        }
-                    </Card>
-                </Container>
-                {this.state.evaluation &&
+                        </Card>
+                    </Container>
+                    {this.state.evaluation &&
                     this.state.enabledSections.map((section, i) => (
-                        <div ref={this.sectionRefs[i+1]}>
+                        <div ref={this.sectionRefs[i + 1]}>
                             <Section section={section}
                                      updateAnswer={this.updateAnswer.bind(this)}
                                      getRef={this.getRef.bind(this)}
@@ -219,30 +244,31 @@ class Questionnaire extends React.Component {
                             />
                         </div>
                     ))
-                }
-                {this.state.evaluation !== -1 &&
-                <Container sx={{height: windowSize.height - 4, display: "flex", alignItems: "center"}}>
-                    <Card style={{
-                        textAlignVertical: "center",
-                        textAlign: "center",
-                        width: "520px",
-                        margin: "50px auto",
-                        padding: "20px",
-                    }}>
-                        <CardContent>
-                            <Typography variant="h1">You're done!<br/>Thank you for answering</Typography><br/>
-                            {/*<label>If you'd like to receive a copy of your answers, please enter your email below:</label><br/><br/>*/}
-                            {/*<TextField sx={{p: 2}} fullWidth placeholder="Your email" onChange={updateEmail}/>*/}
-                        </CardContent>
-                        <CardActions>
-                            <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
-                                    onClick={this.sendAnswers.bind(this)}
-                                    disabled={this.state.submitted || this.state.evaluation === null}
-                            >{this.state.submitted ? "Submitted" : "Submit answers"}</Button>
-                        </CardActions>
-                    </Card>
-                </Container>
-                }
+                    }
+                    {this.state.evaluation !== -1 &&
+                    <Container sx={{height: windowSize.height - 4, display: "flex", alignItems: "center"}}>
+                        <Card style={{
+                            textAlignVertical: "center",
+                            textAlign: "center",
+                            width: "520px",
+                            margin: "50px auto",
+                            padding: "20px",
+                        }}>
+                            <CardContent>
+                                <Typography variant="h1">You're done!<br/>Thank you for answering</Typography><br/>
+                                {/*<label>If you'd like to receive a copy of your answers, please enter your email below:</label><br/><br/>*/}
+                                {/*<TextField sx={{p: 2}} fullWidth placeholder="Your email" onChange={updateEmail}/>*/}
+                            </CardContent>
+                            <CardActions>
+                                <Button variant="contained" color="primary" size="large" style={{margin: "auto"}}
+                                        onClick={this.sendAnswers.bind(this)}
+                                        disabled={this.state.submitted || this.state.evaluation === null}
+                                >{this.state.submitted ? "Submitted" : "Submit answers"}</Button>
+                            </CardActions>
+                        </Card>
+                    </Container>
+                    }
+                </LoadingOverlay>
             </div>
         )
     }
