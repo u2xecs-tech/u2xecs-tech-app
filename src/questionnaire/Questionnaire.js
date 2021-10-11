@@ -30,6 +30,7 @@ class Questionnaire extends React.Component {
             submitted: false,
             flashingQuestion: -1,
             sidebarHidden: true,
+            isLoading: true
         };
 
         let questionRefs = []
@@ -64,6 +65,7 @@ class Questionnaire extends React.Component {
                 evaluationName: evaluation.name,
                 owner: evaluation.creator
             })
+            this.props.didLoad();
 
             console.log(apiData.data.getEvaluation)
         }).catch((error) => {
