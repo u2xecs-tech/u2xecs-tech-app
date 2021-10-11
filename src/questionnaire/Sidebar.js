@@ -10,7 +10,7 @@ export default function Sidebar(props) {
         <Card style={{position: 'absolute', left: 0, top: '50%', transform: 'translate(0%, -50%)', textAlign: 'center'}}>
             <CardContent>
                 <Box style={{display: 'flex', flexDirection: 'column'}}>
-                    <Typography variant='h5'>SHORTCUTS</Typography>
+                    <Typography variant='h5'>SECTIONS</Typography>
                     <br/>
                     <Divider/>
                     <br/>

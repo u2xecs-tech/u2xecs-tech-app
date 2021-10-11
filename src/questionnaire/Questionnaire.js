@@ -30,7 +30,6 @@ class Questionnaire extends React.Component {
             evaluationName: "",
             submitted: false,
             flashingQuestion: -1,
-            sidebarHidden: true,
             isLoading: true
         };
 
@@ -148,7 +147,6 @@ class Questionnaire extends React.Component {
         if (this.state.name !== "") {
             this.sectionRefs[1].current.scrollIntoView({behavior: 'smooth'})
         }
-        this.setState({sidebarHidden: false})
     }
 
     getRef(s, q) {
@@ -178,8 +176,8 @@ class Questionnaire extends React.Component {
         const windowSize = this.props.windowSize
         return (
             <div>
-                {!this.state.sidebarHidden && windowSize.width > 1250 &&
-                <Sidebar sections={this.state.enabledSections} goToSection={this.goToSection.bind(this)}/>
+                {windowSize.width > 1250 &&
+                    <Sidebar sections={this.state.enabledSections} goToSection={this.goToSection.bind(this)}/>
                 }
                 <LoadingOverlay active={this.state.isLoading} spinner styles={{
                     content: {
