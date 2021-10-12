@@ -21,6 +21,9 @@ String.prototype.hashCode = function() {
         hash  = ((hash << 5) - hash) + chr;
         hash |= 0; // Convert to 32bit integer
     }
+    if (hash < 0) {
+        hash *= -1;
+    }
     return hash % 1000;
 };
 

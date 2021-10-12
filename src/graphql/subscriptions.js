@@ -1,108 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateAnswer = /* GraphQL */ `
-  subscription OnCreateAnswer {
-    onCreateAnswer {
-      id
-      evaluationID
-      name
-      email
-      answers
-      date
-      createdAt
-      updatedAt
-      evaluation {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        status
-        creator
-        answers {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-        comments {
-          nextToken
-        }
-      }
-    }
-  }
-`;
-export const onUpdateAnswer = /* GraphQL */ `
-  subscription OnUpdateAnswer {
-    onUpdateAnswer {
-      id
-      evaluationID
-      name
-      email
-      answers
-      date
-      createdAt
-      updatedAt
-      evaluation {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        status
-        creator
-        answers {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-        comments {
-          nextToken
-        }
-      }
-    }
-  }
-`;
-export const onDeleteAnswer = /* GraphQL */ `
-  subscription OnDeleteAnswer {
-    onDeleteAnswer {
-      id
-      evaluationID
-      name
-      email
-      answers
-      date
-      createdAt
-      updatedAt
-      evaluation {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        status
-        creator
-        answers {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        owner
-        comments {
-          nextToken
-        }
-      }
-    }
-  }
-`;
 export const onCreateEvaluation = /* GraphQL */ `
   subscription OnCreateEvaluation($owner: String) {
     onCreateEvaluation(owner: $owner) {
@@ -115,6 +13,9 @@ export const onCreateEvaluation = /* GraphQL */ `
       description
       status
       creator
+      createdAt
+      updatedAt
+      owner
       answers {
         items {
           id
@@ -125,12 +26,10 @@ export const onCreateEvaluation = /* GraphQL */ `
           date
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
       comments {
         items {
           id
@@ -158,6 +57,9 @@ export const onUpdateEvaluation = /* GraphQL */ `
       description
       status
       creator
+      createdAt
+      updatedAt
+      owner
       answers {
         items {
           id
@@ -168,12 +70,10 @@ export const onUpdateEvaluation = /* GraphQL */ `
           date
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
       comments {
         items {
           id
@@ -201,6 +101,9 @@ export const onDeleteEvaluation = /* GraphQL */ `
       description
       status
       creator
+      createdAt
+      updatedAt
+      owner
       answers {
         items {
           id
@@ -211,12 +114,10 @@ export const onDeleteEvaluation = /* GraphQL */ `
           date
           createdAt
           updatedAt
+          owner
         }
         nextToken
       }
-      createdAt
-      updatedAt
-      owner
       comments {
         items {
           id
@@ -229,6 +130,111 @@ export const onDeleteEvaluation = /* GraphQL */ `
         }
         nextToken
       }
+    }
+  }
+`;
+export const onCreateAnswer = /* GraphQL */ `
+  subscription OnCreateAnswer {
+    onCreateAnswer {
+      id
+      evaluationID
+      name
+      email
+      answers
+      date
+      createdAt
+      updatedAt
+      evaluation {
+        id
+        name
+        start_date
+        end_date
+        disclaimer
+        enabled_sections
+        description
+        status
+        creator
+        createdAt
+        updatedAt
+        owner
+        answers {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+      }
+      owner
+    }
+  }
+`;
+export const onUpdateAnswer = /* GraphQL */ `
+  subscription OnUpdateAnswer {
+    onUpdateAnswer {
+      id
+      evaluationID
+      name
+      email
+      answers
+      date
+      createdAt
+      updatedAt
+      evaluation {
+        id
+        name
+        start_date
+        end_date
+        disclaimer
+        enabled_sections
+        description
+        status
+        creator
+        createdAt
+        updatedAt
+        owner
+        answers {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+      }
+      owner
+    }
+  }
+`;
+export const onDeleteAnswer = /* GraphQL */ `
+  subscription OnDeleteAnswer {
+    onDeleteAnswer {
+      id
+      evaluationID
+      name
+      email
+      answers
+      date
+      createdAt
+      updatedAt
+      evaluation {
+        id
+        name
+        start_date
+        end_date
+        disclaimer
+        enabled_sections
+        description
+        status
+        creator
+        createdAt
+        updatedAt
+        owner
+        answers {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+      }
+      owner
     }
   }
 `;
@@ -251,12 +257,12 @@ export const onCreateComment = /* GraphQL */ `
         description
         status
         creator
-        answers {
-          nextToken
-        }
         createdAt
         updatedAt
         owner
+        answers {
+          nextToken
+        }
         comments {
           nextToken
         }
@@ -284,12 +290,12 @@ export const onUpdateComment = /* GraphQL */ `
         description
         status
         creator
-        answers {
-          nextToken
-        }
         createdAt
         updatedAt
         owner
+        answers {
+          nextToken
+        }
         comments {
           nextToken
         }
@@ -317,12 +323,12 @@ export const onDeleteComment = /* GraphQL */ `
         description
         status
         creator
-        answers {
-          nextToken
-        }
         createdAt
         updatedAt
         owner
+        answers {
+          nextToken
+        }
         comments {
           nextToken
         }

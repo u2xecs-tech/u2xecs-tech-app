@@ -13,3 +13,22 @@ export const getEvaluationForQuestionnaire = /* GraphQL */ `
         }
     }
 `;
+
+export const createAnswerForQuestionnaire = /* GraphQL */ `
+    mutation CreateAnswer(
+        $input: CreateAnswerInput!
+        $condition: ModelAnswerConditionInput
+    ) {
+        createAnswer(input: $input, condition: $condition) {
+            id
+            evaluationID
+            name
+            email
+            answers
+            date
+            createdAt
+            updatedAt
+            owner
+        }
+    }
+`;

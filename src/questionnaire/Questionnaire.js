@@ -9,13 +9,14 @@ import {
 } from '@material-ui/core';
 import React, {createRef} from 'react';
 import {API} from 'aws-amplify';
-import {getEvaluationForQuestionnaire} from "../graphql/customQueries";
+import {getEvaluationForQuestionnaire, createAnswerForQuestionnaire} from "../graphql/customQueries";
 import {getAbsoluteNumber, quiz} from "../quiz";
 import Section from "./Section";
 import {createAnswer} from "../graphql/mutations";
 import {usingWindowSize} from "./util/useWindowSize";
 import Sidebar from "./Sidebar";
 import LoadingOverlay from "react-loading-overlay";
+import Auth from "@aws-amplify/auth";
 
 class Questionnaire extends React.Component {
     constructor(props) {
@@ -52,6 +53,7 @@ class Questionnaire extends React.Component {
             variables: {id: this.props.link},
             authMode: 'AWS_IAM'
         }).then((apiData) => {
+            console.log(apiData);
             const evaluation = apiData.data.getEvaluation
             const enabledSections = JSON.parse(evaluation.enabled_sections)
             const answers = {}
@@ -131,7 +133,12 @@ class Questionnaire extends React.Component {
                 answers: JSON.stringify(this.state.answers),
                 evaluationID: this.state.evaluation.id
             };
-            API.graphql({query: createAnswer, variables: {input: formData}}).then((answer) => {
+
+            API.graphql({
+                query: createAnswerForQuestionnaire,
+                variables: {input: formData},
+                authMode: "AWS_IAM"
+            }).then((answer) => {
                 console.log(answer)
                 this.setState({submitted: true, isLoading: false})
                 alert("Thank you! You have successfully submitted your answers.")
@@ -177,7 +184,7 @@ class Questionnaire extends React.Component {
         return (
             <div>
                 {windowSize.width > 1250 &&
-                    <Sidebar sections={this.state.enabledSections} goToSection={this.goToSection.bind(this)}/>
+                <Sidebar sections={this.state.enabledSections} goToSection={this.goToSection.bind(this)}/>
                 }
                 <LoadingOverlay active={this.state.isLoading} spinner styles={{
                     content: {

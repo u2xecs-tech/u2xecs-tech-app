@@ -11,7 +11,7 @@ import EvaluationLink from "./EvaluationLink";
 import Comments from "./Comments";
 import React, {useState, useEffect} from 'react';
 import {API} from 'aws-amplify';
-import {getEvaluation} from '../../graphql/queries';
+import {getEvaluation, listAnswers} from '../../graphql/queries';
 import LoadingOverlay from "react-loading-overlay";
 
 const Evaluation = () => {
@@ -32,15 +32,30 @@ const Evaluation = () => {
     }, []);
 
     async function fetchEvaluation() {
-        const apiData = await API.graphql({query: getEvaluation, variables: {id: id}});
-        let evaluation = apiData.data.getEvaluation;
-        evaluation.answers.items = evaluation.answers.items.map((answer) => {
-            answer.answers = JSON.parse(answer.answers)
-            return answer
-        });
-        console.log(evaluation);
-        setEvaluation(evaluation);
-        setIsLoading(false);
+        try {
+            const apiData = await API.graphql({query: getEvaluation, variables: {id: id}});
+            let evaluation = apiData.data.getEvaluation;
+            const answerApiData = await API.graphql({
+                query: listAnswers, variables: {
+                    filter: {
+                        evaluationID: {
+                            eq: evaluation.id
+                        }
+                    }
+                }
+            })
+            let answers = answerApiData.data.listAnswers;
+            answers.items = answers.items.map((answer) => {
+                answer.answers = JSON.parse(answer.answers)
+                return answer
+            });
+            evaluation.answers = answers;
+            console.log(evaluation);
+            setEvaluation(evaluation);
+            setIsLoading(false);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (

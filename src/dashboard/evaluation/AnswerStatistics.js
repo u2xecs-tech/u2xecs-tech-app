@@ -31,7 +31,9 @@ class AnswerStatistics extends React.Component {
 
     getStats() {
         const stats = [0, 0, 0, 0, 0]
-        const answers = this.props.answers.map((a) => a.answers[this.state.section][this.state.question].answer)
+        const answers = this.props.answers.map((a) => {
+            return a.answers[this.state.section][this.state.question].answer
+        })
         answers.forEach((a) => {
             stats[a]++
         })
