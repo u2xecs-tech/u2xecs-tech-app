@@ -19,20 +19,20 @@ export const createEvaluation = /* GraphQL */ `
       createdAt
       updatedAt
       owner
-      answers {
-        items {
-          id
-          evaluationID
-          name
-          email
-          answers
-          date
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
+#      answers {
+#        items {
+#          id
+#          evaluationID
+#          name
+#          email
+#          answers
+#          date
+#          createdAt
+#          updatedAt
+#          owner
+#        }
+#        nextToken
+#      }
       comments {
         items {
           id
@@ -66,20 +66,20 @@ export const updateEvaluation = /* GraphQL */ `
       createdAt
       updatedAt
       owner
-      answers {
-        items {
-          id
-          evaluationID
-          name
-          email
-          answers
-          date
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
+#      answers {
+#        items {
+#          id
+#          evaluationID
+#          name
+#          email
+#          answers
+#          date
+#          createdAt
+#          updatedAt
+#          owner
+#        }
+#        nextToken
+#      }
       comments {
         items {
           id
@@ -113,20 +113,20 @@ export const deleteEvaluation = /* GraphQL */ `
       createdAt
       updatedAt
       owner
-      answers {
-        items {
-          id
-          evaluationID
-          name
-          email
-          answers
-          date
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
+#      answers {
+#        items {
+#          id
+#          evaluationID
+#          name
+#          email
+#          answers
+#          date
+#          createdAt
+#          updatedAt
+#          owner
+#        }
+#        nextToken
+#      }
       comments {
         items {
           id
@@ -156,26 +156,26 @@ export const createAnswer = /* GraphQL */ `
       date
       createdAt
       updatedAt
-      evaluation {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        status
-        creator
-        createdAt
-        updatedAt
-        owner
-        answers {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-      }
+#      evaluation {
+#        id
+#        name
+#        start_date
+#        end_date
+#        disclaimer
+#        enabled_sections
+#        description
+#        status
+#        creator
+#        createdAt
+#        updatedAt
+#        owner
+#        answers {
+#          nextToken
+#        }
+#        comments {
+#          nextToken
+#        }
+#      }
       owner
     }
   }

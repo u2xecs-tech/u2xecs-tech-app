@@ -17,6 +17,7 @@ import {usingWindowSize} from "./util/useWindowSize";
 import Sidebar from "./Sidebar";
 import LoadingOverlay from "react-loading-overlay";
 import Auth from "@aws-amplify/auth";
+import {Helmet} from "react-helmet";
 
 class Questionnaire extends React.Component {
     constructor(props) {
@@ -183,6 +184,9 @@ class Questionnaire extends React.Component {
         const windowSize = this.props.windowSize
         return (
             <div>
+                <Helmet>
+                    <title>{this.state.evaluationName}</title>
+                </Helmet>
                 {windowSize.width > 1250 &&
                 <Sidebar sections={this.state.enabledSections} goToSection={this.goToSection.bind(this)}/>
                 }
