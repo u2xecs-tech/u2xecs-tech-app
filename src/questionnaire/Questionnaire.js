@@ -12,11 +12,9 @@ import {API} from 'aws-amplify';
 import {getEvaluationForQuestionnaire, createAnswerForQuestionnaire} from "../graphql/customQueries";
 import {getAbsoluteNumber, quiz} from "../quiz";
 import Section from "./Section";
-import {createAnswer} from "../graphql/mutations";
 import {usingWindowSize} from "./util/useWindowSize";
 import Sidebar from "./Sidebar";
 import LoadingOverlay from "react-loading-overlay";
-import Auth from "@aws-amplify/auth";
 import {Helmet} from "react-helmet";
 
 class Questionnaire extends React.Component {
@@ -92,18 +90,17 @@ class Questionnaire extends React.Component {
         if (this.state.submitted) {
             return
         }
-
         if (this.state.name === "") {
             alert("Please input a name.")
             this.sectionRefs[0].current.scrollIntoView({behavior: 'smooth'})
             return
         }
-
         let out = false;
         this.state.enabledSections.every((section) => {
             quiz[Object.keys(quiz)[section]].every((question, j) => {
                 if (typeof this.state.answers[section][j] === "undefined"
                     || (this.state.answers[section][j].answer !== 0 && [null, ""].includes(this.state.answers[section][j].comment))) {
+                    console.log(section, j, getAbsoluteNumber(section, j))
                     this.getRef(section, j).current.scrollIntoView({behavior: 'smooth'})
                     this.flash(getAbsoluteNumber(section, j)).then()
                     out = true

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Link, Link as RouterLink} from 'react-router-dom';
-import {AppBar, Box, Icon, IconButton, Toolbar, Typography} from '@material-ui/core';
+import {AppBar, Box, IconButton, Toolbar, Typography} from '@material-ui/core';
 import InputIcon from '@material-ui/icons/Input';
 import Auth from '@aws-amplify/auth';
 import {Settings} from "react-feather";
