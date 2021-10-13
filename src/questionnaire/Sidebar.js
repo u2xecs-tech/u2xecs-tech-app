@@ -7,7 +7,7 @@ export default function Sidebar(props) {
     const sections = names.filter((name, i) => {return props.sections.includes(i)})
 
     return (
-        <Card style={{position: 'absolute', left: 0, top: '50%', transform: 'translate(0%, -50%)', textAlign: 'center'}}>
+        <Card style={{position: 'absolute', left: 0, top: '50%', transform: 'translate(0%, -50%)', textAlign: 'center', zIndex: 10}}>
             <CardContent>
                 <Box style={{display: 'flex', flexDirection: 'column'}}>
                     <Typography variant='h5'>SECTIONS</Typography>
