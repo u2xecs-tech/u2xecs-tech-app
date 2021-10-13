@@ -23,7 +23,7 @@ type Answer
   @model
   @key(
     name: "byEvaluation",
-    fields: ["evaluationID", "name", "email", "answers"]
+    fields: ["evaluationID", "name", "email"]
   )
   @auth(
     rules: [

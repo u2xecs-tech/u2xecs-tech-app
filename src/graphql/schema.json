@@ -377,7 +377,7 @@
           "name" : "answers",
           "description" : null,
           "args" : [ {
-            "name" : "nameEmailAnswers",
+            "name" : "nameEmail",
             "description" : null,
             "type" : {
               "kind" : "INPUT_OBJECT",
@@ -792,15 +792,6 @@
           "defaultValue" : null
         }, {
           "name" : "email",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "String",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "answers",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
