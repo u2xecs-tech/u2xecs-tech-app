@@ -55,10 +55,10 @@ export function getAbsoluteNumber(section, question) {
         qs.forEach((q, j) => {
             if (i === section && j === question) {
                 absolute = number
+                return
             }
             number += 1
         })
-        number += 1
     })
     return absolute
 }
