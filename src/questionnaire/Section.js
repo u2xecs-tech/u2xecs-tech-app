@@ -48,9 +48,6 @@ class Section extends React.Component {
     }
 
     isRed(idx) {
-        if (this.props.flashingQuestion !== -1) {
-            console.log(getAbsoluteNumber(this.props.section, idx), this.props.flashingQuestion)
-        }
         return getAbsoluteNumber(this.props.section, idx) === this.props.flashingQuestion
     }
 
