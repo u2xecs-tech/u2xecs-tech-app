@@ -23,39 +23,50 @@ const Evaluation = () => {
         answers: {items: [], nextToken: null},
         link: "",
         start_date: "",
-        status: 0
+        status: 0,
+        comments: {items: [], nextToken: null}
     });
     const [isLoading, setIsLoading] = useState(true);
+    const [comments, setComments] = useState([])
 
     useEffect(() => {
-        fetchEvaluation();
+        fetchEvaluation().then()
     }, []);
 
     async function fetchEvaluation() {
         try {
-            const apiData = await API.graphql({query: getEvaluation, variables: {id: id}});
-            let evaluation = apiData.data.getEvaluation;
+            const apiData = await API.graphql({query: getEvaluation, variables: {id: id}})
+            let evaluation = apiData.data.getEvaluation
+
             const answerApiData = await API.graphql({
-                query: listAnswers, variables: {
-                    filter: {
-                        evaluationID: {
-                            eq: evaluation.id
-                        }
-                    }
-                }
+                query: listAnswers,
+                variables: {filter: {evaluationID: {eq: evaluation.id}}}
             })
-            let answers = answerApiData.data.listAnswers;
+            let answers = answerApiData.data.listAnswers
             answers.items = answers.items.map((answer) => {
                 answer.answers = JSON.parse(answer.answers)
                 return answer
-            });
-            evaluation.answers = answers;
-            console.log(evaluation);
-            setEvaluation(evaluation);
-            setIsLoading(false);
+            })
+
+            evaluation.answers = answers
+            console.log(evaluation)
+            setEvaluation(evaluation)
+            setIsLoading(false)
+            setComments(evaluation.comments.items)
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
+    }
+
+    const fetchComments = () => {
+        API.graphql({query: getEvaluation, variables: {id: evaluation.id}})
+            .then((apiData) => {
+                setComments([])
+                setComments(apiData.data.getEvaluation.comments.items)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     return (
@@ -104,7 +115,7 @@ const Evaluation = () => {
                                 <Respondents answers={evaluation.answers.items}/>
                             </Grid>
                             <Grid item lg={3} md={6} xl={8} xs={12}>
-                                <Comments/>
+                                <Comments comments={comments} id={evaluation.id} fetch={fetchComments}/>
                             </Grid>
                         </Grid>
                     </Container>
