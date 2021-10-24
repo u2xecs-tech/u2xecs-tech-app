@@ -27,6 +27,7 @@ const Evaluation = () => {
         comments: {items: [], nextToken: null}
     });
     const [isLoading, setIsLoading] = useState(true);
+    const [comments, setComments] = useState([])
 
     useEffect(() => {
         fetchEvaluation().then()
@@ -51,9 +52,21 @@ const Evaluation = () => {
             console.log(evaluation)
             setEvaluation(evaluation)
             setIsLoading(false)
+            setComments(evaluation.comments.items)
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const fetchComments = () => {
+        API.graphql({query: getEvaluation, variables: {id: evaluation.id}})
+            .then((apiData) => {
+                setComments([])
+                setComments(apiData.data.getEvaluation.comments.items)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 
     return (
@@ -102,7 +115,7 @@ const Evaluation = () => {
                                 <Respondents answers={evaluation.answers.items}/>
                             </Grid>
                             <Grid item lg={3} md={6} xl={8} xs={12}>
-                                <Comments comments={evaluation.comments.items} id={evaluation.id}/>
+                                <Comments comments={comments} id={evaluation.id} fetch={fetchComments}/>
                             </Grid>
                         </Grid>
                     </Container>
