@@ -158,8 +158,8 @@ export default function ReportGenerator(props) {
         data.push(second)
 
         const labels = [`I totally agree`, `I partially agree`, `I neither agree nor disagree`, `I partially disagree`, `I totally disagree`]
-        e.answers.items.forEach((answer) => {
-            const line = [answer.id.hashCode(), answer.name]
+        e.answers.items.forEach((answer, idx) => {
+            const line = [idx + 1, answer.name]
             Object.values(answer.answers).flat().forEach((a) => {
                 line.push(labels[a.answer])
                 if (comments) {

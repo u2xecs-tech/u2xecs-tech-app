@@ -23,7 +23,6 @@ export const onCreateEvaluation = /* GraphQL */ `
           name
           email
           answers
-          date
           createdAt
           updatedAt
           owner
@@ -67,7 +66,6 @@ export const onUpdateEvaluation = /* GraphQL */ `
           name
           email
           answers
-          date
           createdAt
           updatedAt
           owner
@@ -111,7 +109,6 @@ export const onDeleteEvaluation = /* GraphQL */ `
           name
           email
           answers
-          date
           createdAt
           updatedAt
           owner
@@ -141,7 +138,6 @@ export const onCreateAnswer = /* GraphQL */ `
       name
       email
       answers
-      date
       createdAt
       updatedAt
       evaluation {
@@ -176,7 +172,6 @@ export const onUpdateAnswer = /* GraphQL */ `
       name
       email
       answers
-      date
       createdAt
       updatedAt
       evaluation {
@@ -211,7 +206,6 @@ export const onDeleteAnswer = /* GraphQL */ `
       name
       email
       answers
-      date
       createdAt
       updatedAt
       evaluation {

@@ -23,7 +23,6 @@ export const getEvaluation = /* GraphQL */ `
 #          name
 #          email
 #          answers
-#          date
 #          createdAt
 #          updatedAt
 #          owner
@@ -84,29 +83,28 @@ export const getAnswer = /* GraphQL */ `
       name
       email
       answers
-      date
       createdAt
       updatedAt
-      evaluation {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        status
-        creator
-        createdAt
-        updatedAt
-        owner
-        answers {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-      }
+#      evaluation {
+#        id
+#        name
+#        start_date
+#        end_date
+#        disclaimer
+#        enabled_sections
+#        description
+#        status
+#        creator
+#        createdAt
+#        updatedAt
+#        owner
+#        answers {
+#          nextToken
+#        }
+#        comments {
+#          nextToken
+#        }
+#      }
       owner
     }
   }
@@ -124,23 +122,67 @@ export const listAnswers = /* GraphQL */ `
         name
         email
         answers
-        date
         createdAt
         updatedAt
-        evaluation {
-          id
-          name
-          start_date
-          end_date
-          disclaimer
-          enabled_sections
-          description
-          status
-          creator
-          createdAt
-          updatedAt
-          owner
-        }
+#        evaluation {
+#          id
+#          name
+#          start_date
+#          end_date
+#          disclaimer
+#          enabled_sections
+#          description
+#          status
+#          creator
+#          createdAt
+#          updatedAt
+#          owner
+#        }
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const answersByDate = /* GraphQL */ `
+  query AnswersByDate(
+    $evaluationID: ID
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelAnswerFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    answersByDate(
+      evaluationID: $evaluationID
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        evaluationID
+        name
+        email
+        answers
+        createdAt
+        updatedAt
+#        evaluation {
+#          id
+#          name
+#          start_date
+#          end_date
+#          disclaimer
+#          enabled_sections
+#          description
+#          status
+#          creator
+#          createdAt
+#          updatedAt
+#          owner
+#        }
         owner
       }
       nextToken
@@ -169,9 +211,9 @@ export const getComment = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        answers {
-          nextToken
-        }
+#        answers {
+#          nextToken
+#        }
         comments {
           nextToken
         }

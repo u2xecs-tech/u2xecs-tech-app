@@ -26,7 +26,6 @@ export const createEvaluation = /* GraphQL */ `
 #          name
 #          email
 #          answers
-#          date
 #          createdAt
 #          updatedAt
 #          owner
@@ -73,7 +72,6 @@ export const updateEvaluation = /* GraphQL */ `
 #          name
 #          email
 #          answers
-#          date
 #          createdAt
 #          updatedAt
 #          owner
@@ -120,7 +118,6 @@ export const deleteEvaluation = /* GraphQL */ `
 #          name
 #          email
 #          answers
-#          date
 #          createdAt
 #          updatedAt
 #          owner
@@ -153,7 +150,6 @@ export const createAnswer = /* GraphQL */ `
       name
       email
       answers
-      date
       createdAt
       updatedAt
 #      evaluation {
@@ -191,29 +187,28 @@ export const updateAnswer = /* GraphQL */ `
       name
       email
       answers
-      date
       createdAt
       updatedAt
-      evaluation {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        status
-        creator
-        createdAt
-        updatedAt
-        owner
-        answers {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-      }
+#      evaluation {
+#        id
+#        name
+#        start_date
+#        end_date
+#        disclaimer
+#        enabled_sections
+#        description
+#        status
+#        creator
+#        createdAt
+#        updatedAt
+#        owner
+#        answers {
+#          nextToken
+#        }
+#        comments {
+#          nextToken
+#        }
+#      }
       owner
     }
   }
@@ -229,29 +224,28 @@ export const deleteAnswer = /* GraphQL */ `
       name
       email
       answers
-      date
       createdAt
       updatedAt
-      evaluation {
-        id
-        name
-        start_date
-        end_date
-        disclaimer
-        enabled_sections
-        description
-        status
-        creator
-        createdAt
-        updatedAt
-        owner
-        answers {
-          nextToken
-        }
-        comments {
-          nextToken
-        }
-      }
+#      evaluation {
+#        id
+#        name
+#        start_date
+#        end_date
+#        disclaimer
+#        enabled_sections
+#        description
+#        status
+#        creator
+#        createdAt
+#        updatedAt
+#        owner
+#        answers {
+#          nextToken
+#        }
+#        comments {
+#          nextToken
+#        }
+#      }
       owner
     }
   }
@@ -281,9 +275,9 @@ export const createComment = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        answers {
-          nextToken
-        }
+#        answers {
+#          nextToken
+#        }
         comments {
           nextToken
         }
@@ -317,9 +311,9 @@ export const updateComment = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        answers {
-          nextToken
-        }
+#        answers {
+#          nextToken
+#        }
         comments {
           nextToken
         }
@@ -353,9 +347,9 @@ export const deleteComment = /* GraphQL */ `
         createdAt
         updatedAt
         owner
-        answers {
-          nextToken
-        }
+#        answers {
+#          nextToken
+#        }
         comments {
           nextToken
         }

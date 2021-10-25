@@ -11,7 +11,7 @@ import EvaluationLink from "./EvaluationLink";
 import Comments from "./Comments";
 import React, {useState, useEffect} from 'react';
 import {API} from 'aws-amplify';
-import {getEvaluation, listAnswers} from '../../graphql/queries';
+import {getEvaluation, answersByDate} from '../../graphql/queries';
 import LoadingOverlay from "react-loading-overlay";
 
 const Evaluation = () => {
@@ -39,10 +39,14 @@ const Evaluation = () => {
             let evaluation = apiData.data.getEvaluation
 
             const answerApiData = await API.graphql({
-                query: listAnswers,
-                variables: {filter: {evaluationID: {eq: evaluation.id}}}
+                query: answersByDate,
+                variables: {
+                    evaluationID: evaluation.id,
+                    sortDirection: 'ASC'
+                }
             })
-            let answers = answerApiData.data.listAnswers
+            console.log(answerApiData);
+            let answers = answerApiData.data.answersByDate
             answers.items = answers.items.map((answer) => {
                 answer.answers = JSON.parse(answer.answers)
                 return answer
