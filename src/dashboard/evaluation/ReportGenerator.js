@@ -172,6 +172,14 @@ export default function ReportGenerator(props) {
         return data
     }
 
+    function didDownload() {
+        if (!downloadReady) {
+            return
+        }
+
+        setTimeout(handleClose, 300)
+    }
+
     return (
         <div>
             <Button sx={{mx: 1}} color="primary" variant="contained" onClick={handleClickOpen('paper')}
@@ -263,7 +271,7 @@ export default function ReportGenerator(props) {
                     {downloadReady ?
                         <div>
                             {file === 0 ?
-                                <Button>
+                                <Button onClick={didDownload}>
                                     <PDFDownloadLink document={<Report evaluation={e} comments={comments} charts={getCharts()}/>} fileName={`${e.name}.pdf`}>
                                         {({ blob, url, loading, error }) =>
                                             loading ? 'Generating.....' : 'Download'
@@ -271,7 +279,7 @@ export default function ReportGenerator(props) {
                                     </PDFDownloadLink>
                                 </Button>
                                 :
-                                <Button>
+                                <Button onClick={didDownload}>
                                     <CSVLink data={csvData()} filename={`${e.name}`}>Download</CSVLink>
                                 </Button>
                             }
