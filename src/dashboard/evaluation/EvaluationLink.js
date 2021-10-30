@@ -1,6 +1,7 @@
 import {Avatar, Button, Card, CardActions, CardContent, Grid, Tooltip, Typography} from '@material-ui/core';
 import {indigo} from "@material-ui/core/colors";
 import LinkIcon from "@material-ui/icons/Link";
+import {useState} from "react";
 
 const copyToClipboard = (text) => {
     const el = document.createElement('textarea');
@@ -13,6 +14,14 @@ const copyToClipboard = (text) => {
 
 const EvaluationLink = (props) => {
     const url = "https://u2xecs.tech/questionnaire/" + props.link
+
+    const [didCopy, setDidCopy] = useState(false)
+
+    const onCopy = () => {
+        copyToClipboard(url)
+        setDidCopy(true)
+        setTimeout(() => setDidCopy(false), 3000)
+    }
 
     return (
         <Card {...props}>
@@ -52,8 +61,8 @@ const EvaluationLink = (props) => {
             </CardContent>
             <CardActions>
                 <Tooltip title={url}>
-                    <Button size="small" color="primary" onClick={() => copyToClipboard(url)}>
-                        Copy link
+                    <Button size="small" color="primary" onClick={onCopy}>
+                        {didCopy ? "Link copied!" : "Copy link"}
                     </Button>
                 </Tooltip>
             </CardActions>
