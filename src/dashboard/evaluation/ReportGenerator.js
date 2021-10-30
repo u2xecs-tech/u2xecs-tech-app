@@ -11,6 +11,7 @@ import {Bar, Chart, Doughnut} from "react-chartjs-2";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {CSVLink} from "react-csv";
 import {quiz} from "../../quiz";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 export default function ReportGenerator(props) {
     const [chartType, setChartType] = useState(0);
@@ -63,11 +64,6 @@ export default function ReportGenerator(props) {
         return stats;
     }
 
-    const getPercentages = (stats) => {
-        const sum = stats.reduce((a, b) => a + b)
-        return stats.map((s) => Math.round(s * 100 / sum))
-    }
-
     const getCharts = () => {
         if (e.answers.items.length === 0) {
             return
@@ -98,7 +94,6 @@ export default function ReportGenerator(props) {
 
     const data = (s, q) => {
         const stats = getStats(s, q)
-        const percentages = getPercentages(stats)
         return {
             datasets: [
                 {
@@ -115,11 +110,11 @@ export default function ReportGenerator(props) {
                 }
             ],
             labels: [
-                `I totally agree:  ${percentages[0]}%`,
-                `I partially agree: ${percentages[1]}%`,
-                `I neither agree nor disagree: ${percentages[2]}%`,
-                `I partially disagree: ${percentages[3]}%`,
-                `I totally disagree: ${percentages[4]}%`
+                `I totally agree`,
+                `I partially agree`,
+                `I neither agree nor disagree`,
+                `I partially disagree`,
+                `I totally disagree`
             ]
         }
     }
@@ -135,6 +130,28 @@ export default function ReportGenerator(props) {
             },
             tooltip: {
                 enabled: false
+            },
+            datalabels: {
+                formatter: (value, ctx) => {
+                    let sum = 0
+                    let dataArr = ctx.chart.data.datasets[0].data
+                    dataArr.forEach(data => {
+                        sum += data
+                    })
+                    if (value === 0) {
+                        return ""
+                    }
+                    return (value*100 / sum).toFixed(1)+"%"
+                },
+                color: 'white',
+                labels: {
+                    title: {
+                        font: {
+                            weight: 'bold',
+                            size: 16
+                        }
+                    },
+                },
             }
         },
     }
@@ -253,8 +270,8 @@ export default function ReportGenerator(props) {
                                         {answers.map((a, i) => (
                                             <div>
                                                 {chartType === 0
-                                                    ? <Doughnut id={`chart${section}-${i}`} data={data(section, i)} options={options} width={520} height={200}/>
-                                                    : <Bar id={`chart${section}-${i}`} data={data(section, i)} options={options} width={520} height={200}/>
+                                                    ? <Doughnut id={`chart${section}-${i}`} data={data(section, i)} options={options} plugins={[ChartDataLabels]} width={520} height={200}/>
+                                                    : <Bar id={`chart${section}-${i}`} data={data(section, i)} options={options} plugins={[ChartDataLabels]} width={520} height={200}/>
                                                 }
                                             </div>
                                         ))}

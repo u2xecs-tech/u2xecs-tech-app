@@ -1,11 +1,11 @@
 import React from 'react';
 import {Bar, Doughnut} from 'react-chartjs-2';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {
     Box,
     Card,
     CardContent,
     CardHeader,
-    Chip,
     colors,
     Divider,
     MenuItem,
@@ -64,7 +64,33 @@ class AnswerStatistics extends React.Component {
             responsive: true,
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'bottom'
+                },
+                tooltip: {
+                    enabled: false
+                },
+                datalabels: {
+                    formatter: (value, ctx) => {
+                        let sum = 0
+                        let dataArr = ctx.chart.data.datasets[0].data
+                        dataArr.forEach(data => {
+                            sum += data
+                        })
+                        if (value === 0) {
+                            return ""
+                        }
+                        return (value*100 / sum).toFixed(1)+"%"
+                    },
+                    color: 'white',
+                    labels: {
+                        title: {
+                            font: {
+                                weight: 'bold',
+                                size: 16
+                            }
+                        },
+                    },
                 }
             },
             scales: {
@@ -146,51 +172,16 @@ class AnswerStatistics extends React.Component {
                             </Box>
                             <Box
                                 sx={{
-                                    height: 300,
+                                    height: 400,
                                     position: 'relative',
                                     pt: 3
                                 }}
                             >
                                 {
                                     this.state.chart === 0
-                                        ? <Doughnut data={data} options={options}/>
-                                        : <Bar data={data} options={options}/>
+                                        ? <Doughnut data={data} options={options} plugins={[ChartDataLabels]}/>
+                                        : <Bar data={data} options={options} plugins={[ChartDataLabels]}/>
                                 }
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    pt: 2
-                                }}
-                            >
-                                {labels.map((label, i) => (
-                                    <div>
-                                        <Divider/>
-                                        <Box
-                                            key={label}
-                                            sx={{
-                                                pt: 0.8,
-                                                pb: 0.8,
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'center'
-                                            }}
-                                        >
-                                            <Chip
-                                                label={label}
-                                                style={{
-                                                    backgroundColor: choiceColors[i]
-                                                }}
-                                            />
-                                            <Typography variant="h5">
-                                                {Math.round(this.getPercentages(this.getStats())[i])}
-                                                %
-                                            </Typography>
-                                        </Box>
-                                    </div>
-                                ))}
                             </Box>
                         </CardContent>
                 }
