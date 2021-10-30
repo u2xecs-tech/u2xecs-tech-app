@@ -20,6 +20,12 @@ export default function Report(props) {
             .map(a => {return {name: a.name, comment: a.answers[s][q].comment}})
     }
 
+    const getRespondentID = (name) => {
+        return e.answers.items
+            .sort((a, b) => { return new Date(b.createdAt) - new Date(a.createdAt) })
+            .findIndex(a => a.name === name) + 1
+    }
+
     const styles = StyleSheet.create({
         page: {
             flexDirection: 'column',
@@ -72,7 +78,7 @@ export default function Report(props) {
                                         {getComments(section, i).map((a) => (
                                             <Text
                                                 style={{fontFamily: "Helvetica", fontSize: "11", paddingVertical: 4}}><Text
-                                                style={{fontFamily: "Helvetica-Bold"}}>{a.name}</Text>: {a.comment}</Text>
+                                                style={{fontFamily: "Helvetica-Bold"}}>{getRespondentID(a.name)} - {a.name}</Text>: {a.comment}</Text>
                                         ))}
                                     </View>
                                 }
