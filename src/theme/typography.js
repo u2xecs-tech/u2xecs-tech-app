@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
     fontFamily: [
-        '"Helvetica Neue"',
+        'Helvetica Neue',
     ],
     h1: {
         fontWeight: 500,
