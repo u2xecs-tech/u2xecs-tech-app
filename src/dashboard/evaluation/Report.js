@@ -1,5 +1,5 @@
 import React from 'react';
-import {quiz} from "../../quiz";
+import {getAbsoluteNumber, quiz} from "../../quiz";
 import {Document, Font, Image, Page, StyleSheet, Text, View} from '@react-pdf/renderer';
 import moment from "moment";
 
@@ -67,7 +67,7 @@ export default function Report(props) {
 
                         {answers.map((a, i) => (
                             <View style={styles.question}>
-                                <Text style={{fontFamily: "Helvetica", fontSize: "14", paddingVertical: 8}}>{i + 1}. {getQuestion(section, i)}</Text>
+                                <Text style={{fontFamily: "Helvetica", fontSize: "14", paddingVertical: 8}}>{getAbsoluteNumber(section, i)+1}. {getQuestion(section, i)}</Text>
 
                                 <Image src={charts[section][i]} style={{paddingVertical: 10}}/>
 

@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import choiceColors from '../../theme/colors';
 import labels from '../../theme/labels';
-import {quiz} from "../../quiz";
+import {getAbsoluteNumber, quiz} from "../../quiz";
 
 const sectionNames = Object.keys(quiz)
 
@@ -132,8 +132,8 @@ class AnswerStatistics extends React.Component {
                                     <Select value={this.state.question} variant='standard' onChange={(e) => {
                                         this.setState({question: e.target.value})
                                     }}>
-                                        {Array(sections[this.state.section].length).fill(0).map((a, i) => (
-                                            <MenuItem value={i}>Q{i + 1}</MenuItem>
+                                        {sections[this.state.section].map((a, i) => (
+                                            <MenuItem value={i}>Q{getAbsoluteNumber(this.state.section, i)+1}</MenuItem>
                                         ))}
                                     </Select>
                                 </Box>

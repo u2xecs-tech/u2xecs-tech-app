@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import moment from "moment";
 import {Box, Chip, Typography} from "@material-ui/core";
-import {quiz} from "../../quiz";
+import {getAbsoluteNumber, quiz} from "../../quiz";
 import AlertNoActionDialog from "../util/AlertNoActionDialog";
 
 export default function RespondentAnswers(props) {
@@ -82,7 +82,7 @@ export default function RespondentAnswers(props) {
                                                 pb: 2
                                             }}
                                         >
-                                            <Typography variant='body'>{i + 1}. {getQuestion(section, i)}</Typography>
+                                            <Typography variant='body'>{getAbsoluteNumber(section, i)+1}. {getQuestion(section, i)}</Typography>
                                             <Box
                                                 sx={{
                                                     display: 'flex',

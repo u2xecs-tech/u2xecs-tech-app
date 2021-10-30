@@ -48,17 +48,22 @@ export const quiz = {
     ],
 }
 
+/* eslint eqeqeq: "off" */
 export function getAbsoluteNumber(section, question) {
     let number = 0;
     let absolute = 0;
+
     Object.entries(quiz).forEach(([s, qs], i) => {
         qs.forEach((q, j) => {
-            if (i === section && j === question) {
+            if (i == section && j == question) {
                 absolute = number
                 return
             }
             number += 1
         })
+        if (absolute == number) {
+            return
+        }
     })
     return absolute
 }

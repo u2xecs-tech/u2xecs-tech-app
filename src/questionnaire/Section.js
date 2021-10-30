@@ -70,7 +70,7 @@ class Section extends React.Component {
                             maxWidth: 880,
                         }}>
                             <Typography variant="h4" sx={{m: 1, color: this.isRed(idx) ? "red" : "black"}}>
-                                {idx + 1}. {question}
+                                {getAbsoluteNumber(this.props.section, idx)+1}. {question}
                             </Typography>
                             <Box>
                                 {labels.map((label, i) => (
