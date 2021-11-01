@@ -121,11 +121,11 @@ class Questionnaire extends React.Component {
             variables: {id: this.props.link},
             authMode: 'AWS_IAM'
         }).then((apiData) => {
-            const start_date = Date.now()
+            // const start_date = Date.now()
             const formData = {
                 name: this.state.name,
                 email: this.state.email,
-                date: start_date.toString(),
+                // date: start_date.toString(),
                 answers: JSON.stringify(this.state.answers),
                 evaluationID: this.state.evaluation.id
             };

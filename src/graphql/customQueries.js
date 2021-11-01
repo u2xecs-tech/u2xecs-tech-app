@@ -25,7 +25,6 @@ export const createAnswerForQuestionnaire = /* GraphQL */ `
             name
             email
             answers
-            date
             createdAt
             updatedAt
             owner
